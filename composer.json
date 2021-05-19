@@ -1,0 +1,44 @@
+{
+    "name": "pharaonic/laravel-translatable",
+    "description": "Simplest Translatable for Laravel Eloquent/Model",
+    "keywords": [
+        "php",
+        "laravel",
+        "multilingual",
+        "languages",
+        "translate",
+        "translation",
+        "translations",
+        "eloquent",
+        "model"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Moamen Eltouny",
+            "email": "raggi@pharaonic.io"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "laravel/framework": ">=6.0",
+        "pharaonic/laravel-helpers": ">=2.3"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Pharaonic\\Laravel\\Translatable\\TranslatableServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Pharaonic\\Laravel\\Translatable\\": "src"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
