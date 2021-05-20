@@ -70,7 +70,7 @@ class Transtable extends Command
                         '     * @var string' . PHP_EOL .
                         '     */' . PHP_EOL .
                         '    protected $table = \'' . $mainTable . '\';' . PHP_EOL . PHP_EOL .
-                        '     /**' . PHP_EOL .
+                        '    /**' . PHP_EOL .
                         '     * The attributes that are mass assignable.' . PHP_EOL .
                         '     *' . PHP_EOL .
                         '     * @var array' . PHP_EOL .
