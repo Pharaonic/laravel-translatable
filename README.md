@@ -11,7 +11,7 @@
   <a href="https://packagist.org/packages/pharaonic/laravel-translatable" target="_blank"><img src="https://poser.pugx.org/pharaonic/laravel-translatable/downloads" alt="Packagist Downloads"></a>
 </p>
 
-<h3 align="center">Generates meta tags with quick and easy functions & blade directives.</h3>
+<h3 align="center">Simplest Translatable for Laravel Eloquent/Model.</h3>
 <br>
 
 ## Documentation
