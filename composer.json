@@ -24,6 +24,10 @@
         "laravel/framework": ">=6.0",
         "pharaonic/laravel-helpers": ">=2.3"
     },
+    "require-dev": {
+        "orchestra/testbench": "^4.0||^5.0||^6.0",
+        "pharaonic/laravel-sluggable": "^1.0"
+    },
     "config": {
         "sort-packages": true
     },
@@ -37,6 +41,11 @@
     "autoload": {
         "psr-4": {
             "Pharaonic\\Laravel\\Translatable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pharaonic\\Laravel\\Translatable\\Tests\\": "tests"
         }
     },
     "minimum-stability": "dev",
