@@ -126,7 +126,7 @@ trait Translatable
         $this->setRelation('translations', $list);
         return $list;
     }
-    
+
     /**
      * Save All Dirty Translations
      *
