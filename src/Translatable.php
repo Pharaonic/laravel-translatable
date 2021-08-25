@@ -5,13 +5,12 @@ namespace Pharaonic\Laravel\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Pharaonic\Laravel\Helpers\Traits\HasCustomAttributes;
 use Pharaonic\Laravel\Translatable\Traits\Actions;
 use Pharaonic\Laravel\Translatable\Traits\Scopes;
 
 trait Translatable
 {
-    use HasCustomAttributes, Scopes, Actions;
+    use Scopes, Actions;
 
     /**
      * Current Locale
@@ -41,7 +40,7 @@ trait Translatable
         static::retrieved(function (Model $model) {
             if (isset($model->translatableAttributes))
                 foreach ($model->translatableAttributes as $attr)
-                    $model->addGetterAttribute($attr, '_getTranslatableItemField');
+                    $model->setAttribute($attr, $model->translateOrDefault()->{$attr} ?? null);
         });
 
         // STORE/UPDATE
@@ -83,17 +82,6 @@ trait Translatable
     public function getTranslatableField()
     {
         return Str::snake(Str::studly(class_basename($this))) . '_' . $this->getKeyName();
-    }
-
-    /**
-     * Getting Record Field's Value
-     *
-     * @param string $key
-     * @return string|null
-     */
-    protected function _getTranslatableItemField(string $key)
-    {
-        return $this->getTranslation()->{$key} ?? null;
     }
 
     /**
