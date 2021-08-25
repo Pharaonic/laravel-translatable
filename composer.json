@@ -21,8 +21,7 @@
     ],
     "require": {
         "php": ">=7.2",
-        "laravel/framework": ">=6.0",
-        "pharaonic/laravel-helpers": ">=2.3"
+        "laravel/framework": ">=6.0"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0||^5.0||^6.0",
