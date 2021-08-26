@@ -46,14 +46,14 @@ trait Translatable
         // STORE/UPDATE
         static::saving(function (Model $model) {
             foreach ($model->translatableAttributes as $attr)
-                if ($model->{$attr} ?? null) unset($model->{$attr});
+                unset($model->{$attr});
         });
 
         // SAVED
         static::saved(function (Model $model) {
             $model->saveTranslations();
         });
-        
+
         // DESTROY
         static::deleting(function (Model $model) {
             $model->deleteTranslations();
