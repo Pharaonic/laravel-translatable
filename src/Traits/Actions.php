@@ -95,11 +95,11 @@ trait Actions
      * Getting Translation with current Locale or Default Locale
      *
      * @param string $locale
-     * @return Model
+     * @return Model|null
      */
-    public function translateOrDefault(string $locale = null): Model
+    public function translateOrDefault(string $locale = null)
     {
-        return $this->getTranslation($locale) ?? $this->getTranslation(config('Pharaonic.translatable.default'));
+        return $this->getTranslation($locale) ?? $this->getTranslation(config('Pharaonic.translatable.default')) ?? null;
     }
 
     /**
