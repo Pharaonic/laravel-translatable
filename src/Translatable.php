@@ -38,7 +38,7 @@ trait Translatable
     {
         // GET
         static::retrieved(function (Model $model) {
-            if (isset($model->translatableAttributes))
+            if (isset($model->translatableAttributes) && $model->relationLoaded('translations'))
                 foreach ($model->translatableAttributes as $attr)
                     $model->setAttribute($attr, $model->translateOrDefault()->{$attr} ?? null);
         });
