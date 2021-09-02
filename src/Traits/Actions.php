@@ -99,7 +99,7 @@ trait Actions
      */
     public function translateOrDefault(string $locale = null)
     {
-        return $this->getTranslation($locale) ?? $this->getTranslation(config('Pharaonic.translatable.default')) ?? null;
+        return $this->getTranslation($locale) ?? $this->getTranslation(config('Pharaonic.translatable.default', 'en')) ?? null;
     }
 
     /**
