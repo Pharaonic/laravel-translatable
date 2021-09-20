@@ -42,8 +42,18 @@ trait Actions
 
         $this->hasTranslation($locale);
 
-        if (isset($this->translations[$locale]))
+        if (isset($this->translations[$locale])) {
+            if (is_array($this->translations[$locale])) {
+                $item = $this->getTranslatableModel();
+                $item = new $item();
+                $item->locale = $locale;
+                $item->{$this->getTranslatableField()} = $this->getKey();
+                $item->fill($this->translations[$locale]);
+                $this->addTranslatableWithLocale($locale, $item);
+            }
+
             return $this->translations[$locale];
+        }
 
         return null;
     }
