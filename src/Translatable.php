@@ -52,8 +52,13 @@ trait Translatable
         // SAVED
         static::saved(function (Model $model) {
             if ($model->wasRecentlyCreated)
-                foreach ($model->translations as $translation)
-                    $translation->{$model->getTranslatableField()} = $model->getKey();
+                foreach ($model->translations as $locale => &$translation) {
+                    if (is_array($translation)) {
+                        $translation = $model->translateOrNew($locale);
+                    } else {
+                        $translation->{$model->getTranslatableField()} = $model->getKey();
+                    }
+                }
 
             $model->saveTranslations();
         });
