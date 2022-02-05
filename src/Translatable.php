@@ -36,13 +36,6 @@ trait Translatable
      */
     public static function bootTranslatable()
     {
-        // GET
-        static::retrieved(function (Model $model) {
-            if (isset($model->translatableAttributes) && $model->relationLoaded('translations'))
-                foreach ($model->translatableAttributes as $attr)
-                    $model->setAttribute($attr, $model->translateOrDefault()->{$attr} ?? null);
-        });
-
         // STORE/UPDATE
         static::saving(function (Model $model) {
             foreach ($model->translatableAttributes as $attr)
@@ -151,5 +144,25 @@ trait Translatable
     protected function deleteTranslations()
     {
         $this->translations()->delete();
+    }
+
+    /**
+     * Set the given relationship on the model.
+     *
+     * @param  string  $relation
+     * @param  mixed  $value
+     * @return $this
+     */
+    public function setRelation($relation, $value)
+    {
+        parent::setRelation($relation, $value);
+
+        if (isset($this->translatableAttributes) && $this->relationLoaded('translations')) {
+            foreach ($this->translatableAttributes as $attr) {
+                $this->setAttribute($attr, $this->translateOrDefault()->{$attr} ?? null);
+            }
+        }
+
+        return $this;
     }
 }
