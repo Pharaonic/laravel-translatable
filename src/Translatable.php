@@ -71,7 +71,7 @@ trait Translatable
                 throw new Exception($model->$key . ' attribute should be array.');
         });
 
-        static::saved(function (Model $model) {
+        static::created(function (Model $model) {
             $model->createOrUpdateCatchedTranslations();
             $model->saveTranslations();
         });
