@@ -74,7 +74,7 @@ trait Translatable
             }
         });
 
-        static::saved(function (Model $model) {
+        static::created(function (Model $model) {
             $model->createOrUpdateCatchedTranslations();
             $model->saveTranslations($model);
         });
