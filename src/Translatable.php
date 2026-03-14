@@ -11,7 +11,7 @@ use Pharaonic\Laravel\Translatable\Traits\Scopes;
 
 trait Translatable
 {
-    use Scopes, Actions;
+    use Actions, Scopes;
 
     /**
      * Current Locale
@@ -27,7 +27,6 @@ trait Translatable
      */
     protected $catchedTranslations = null;
 
-
     /**
      * Init Translatable
      *
@@ -38,8 +37,9 @@ trait Translatable
         $this->currentTranslatableLocale = app()->getLocale();
 
         if (isset($this->translationsKey)) {
-            if (in_array($this->translationsKey, ['translations', 'locales']))
+            if (in_array($this->translationsKey, ['translations', 'locales'])) {
                 throw new \Exception('You cannot use `translations` or `locales` as translations key.');
+            }
             $this->fillable[] = $this->translationsKey;
         } else {
             $this->fillable[] = 'locale';
@@ -58,27 +58,30 @@ trait Translatable
             $key = $model->translationsKey ?? 'locale';
 
             // Remove Translatable Attributes
-            foreach ($model->translatableAttributes as $attr)
+            foreach ($model->translatableAttributes as $attr) {
                 unset($model->{$attr});
+            }
 
             // Catch Translations Data
             $model->catchedTranslations = $model->{$key} ?? null;
 
-            if (isset($model->{$key}))
+            if (isset($model->{$key})) {
                 unset($model->{$key});
+            }
 
-            if (!is_null($model->catchedTranslations) && !is_array($model->catchedTranslations))
-                throw new Exception($model->$key . ' attribute should be array.');
+            if (! is_null($model->catchedTranslations) && ! is_array($model->catchedTranslations)) {
+                throw new Exception($model->$key.' attribute should be array.');
+            }
         });
 
         static::saved(function (Model $model) {
             $model->createOrUpdateCatchedTranslations();
-            $model->saveTranslations();
+            $model->saveTranslations($model);
         });
     }
 
     /**
-     * Create or Update Cated Translations on SAVED Event.
+     * Create or Update Catched Translations on SAVED Event.
      *
      * @return void
      */
@@ -100,7 +103,7 @@ trait Translatable
      */
     public function getTranslatableTable()
     {
-        return Str::snake(Str::pluralStudly(class_basename($this) . 'Translation'));
+        return Str::snake(Str::pluralStudly(class_basename($this).'Translation'));
     }
 
     /**
@@ -110,7 +113,7 @@ trait Translatable
      */
     public function getTranslatableModel()
     {
-        return __CLASS__ . 'Translation';
+        return __CLASS__.'Translation';
     }
 
     /**
@@ -120,11 +123,11 @@ trait Translatable
      */
     public function getTranslatableField()
     {
-        return Str::snake(Str::studly(class_basename($this))) . '_' . $this->getKeyName();
+        return Str::snake(Str::studly(class_basename($this))).'_'.$this->getKeyName();
     }
 
     /**
-     * Get Prepared Traslations
+     * Get Prepared Translations
      *
      * @return Collection
      */
@@ -133,6 +136,7 @@ trait Translatable
         if (isset($this->getRelation('translations')[0])) {
             $list = $this->getRelation('translations')->keyBy('locale');
             $this->setRelation('translations', $list);
+
             return $list;
         }
 
@@ -146,11 +150,13 @@ trait Translatable
      */
     public function getTranslationsAttribute()
     {
-        if ($this->relationLoaded('translations'))
+        if ($this->relationLoaded('translations')) {
             return $this->preparedTranslations();
+        }
 
         $list = $this->translations()->get()->keyBy('locale');
         $this->setRelation('translations', $list);
+
         return $list;
     }
 
@@ -159,17 +165,26 @@ trait Translatable
      *
      * @return void
      */
-    protected function saveTranslations()
+    protected function saveTranslations(Model $model)
     {
-        if ($this->relationLoaded('translations'))
+        if ($this->relationLoaded('translations')) {
+            $currentLocales = array_keys($model->catchedTranslations);
+
             foreach ($this->getRelation('translations') as $item) {
                 if ($item->isDirty()) {
-                    if (!$item->{$this->getTranslatableField()})
+                    if (! $item->{$this->getTranslatableField()}) {
                         $item->{$this->getTranslatableField()} = $this->getKey();
+                    }
 
                     $item->save();
                 }
+
+                if (! in_array($item->locale, $currentLocales)) {
+                    $model->setRelation('translations', $model->getRelation('translations')->except($item->getKey()));
+                    $item->delete();
+                }
             }
+        }
     }
 
     /**
