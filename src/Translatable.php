@@ -168,7 +168,7 @@ trait Translatable
     protected function saveTranslations(Model $model)
     {
         if ($this->relationLoaded('translations')) {
-            $currentLocales = array_keys($model->catchedTranslations);
+            $currentLocales = array_keys($model->catchedTranslations ?? []);
 
             foreach ($this->getRelation('translations') as $item) {
                 if ($item->isDirty()) {
