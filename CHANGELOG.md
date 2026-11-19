@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## 12.0.0 - Unreleased
+
+The 10.0.0 release for Laravel 12: the same code, API and changes as 6.0.0 and 10.0.0 below, including the Laravel Boost resources.
+
+### Compatibility
+
+- Laravel 12 on PHP 8.2, 8.3, 8.4 and 8.5. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
+
 ## 11.0.0 - Unreleased
 
 The 10.0.0 release for Laravel 11: the same code, API and changes as 6.0.0 and 10.0.0 below, including the Laravel Boost resources.
