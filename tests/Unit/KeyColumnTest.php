@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pharaonic\Laravel\Translatable\Tests\Unit;
 
 use Pharaonic\Laravel\Translatable\Console\SchemaGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class KeyColumnTest extends TestCase
@@ -40,6 +41,7 @@ final class KeyColumnTest extends TestCase
     /**
      * @dataProvider types
      */
+    #[DataProvider('types')]
     public function test_the_foreign_key_column_matches_the_model_key_type(string $type, string $driver, ?string $expected): void
     {
         $this->assertSame($expected, SchemaGenerator::keyColumnFor($type, 'post_id', $driver));

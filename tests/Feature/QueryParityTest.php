@@ -14,6 +14,7 @@ use Pharaonic\Laravel\Translatable\Tests\Fixtures\ColumnsPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\JsonPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\TablePage;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Every scope returns the same records under the three strategies.
@@ -72,6 +73,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_translated_and_not_translated(string $class): void
     {
         $this->seedPages($class);
@@ -91,6 +93,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_exact_and_like_conditions(string $class): void
     {
         $this->seedPages($class);
@@ -105,6 +108,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_or_conditions_stay_grouped(string $class): void
     {
         $this->seedPages($class);
@@ -117,6 +121,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_numeric_comparisons_are_numeric(string $class): void
     {
         $this->seedPages($class);
@@ -129,6 +134,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_in_and_presence_conditions(string $class): void
     {
         $this->seedPages($class);
@@ -142,6 +148,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_ordering_puts_missing_values_last(string $class): void
     {
         $this->seedPages($class);
@@ -155,6 +162,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_progress_conditions(string $class): void
     {
         $this->seedPages($class);
@@ -166,6 +174,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_values_are_bound_and_identifiers_validated(string $class): void
     {
         $this->seedPages($class);
@@ -191,6 +200,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_scopes_keep_the_preceding_constraints(string $class): void
     {
         $this->seedPages($class);
@@ -203,6 +213,7 @@ final class QueryParityTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_eager_loading_avoids_a_query_per_record(string $class): void
     {
         $this->seedPages($class);
