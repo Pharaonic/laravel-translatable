@@ -13,7 +13,7 @@ php artisan make:translatable Page --table
 
 | Option | Description |
 | --- | --- |
-| `--table`, `--json`, `--columns` | Write that strategy's marker on the model. Without one, the model has no marker and follows `translatable.strategy`. At most one. A json model also gets `$casts` for its JSON columns. |
+| `--table`, `--json`, `--columns` | Write that strategy's marker on the model. Without one, the model has no marker and follows `translatable.strategy`. At most one. |
 | `-m`, `--migrations` | Also create the migrations: the model's table, plus the translations table under the table strategy. |
 | `--locales=en,ar` | The locale columns of the columns strategy. Defaults to `app.locale` and `app.fallback_locale`. |
 
