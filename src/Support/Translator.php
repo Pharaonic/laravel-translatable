@@ -737,9 +737,7 @@ final class Translator
      */
     private function snapshot(Model $model, TranslationStrategy $strategy): array
     {
-        $original = method_exists($model, 'getRawOriginal') ? $model->getRawOriginal() : $model->getOriginal();
-
-        return [$model->getAttributes(), is_array($original) ? $original : [], $model->exists, $model->wasRecentlyCreated, $strategy->snapshot($model)];
+        return [$model->getAttributes(), RawOriginal::of($model), $model->exists, $model->wasRecentlyCreated, $strategy->snapshot($model)];
     }
 
     /**

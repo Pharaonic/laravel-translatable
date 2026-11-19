@@ -12,6 +12,7 @@ use Pharaonic\Laravel\Translatable\Query\JsonQueryCompiler;
 use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
 use Pharaonic\Laravel\Translatable\Resolution\LocaleColumnMapper;
 use Pharaonic\Laravel\Translatable\Support\CastResolver;
+use Pharaonic\Laravel\Translatable\Support\RawOriginal;
 
 /**
  * One JSON column per translated field on the model's table, holding
@@ -55,9 +56,7 @@ final class JsonStrategy implements TranslationStrategy
 
     public function original(Model $model): array
     {
-        $original = method_exists($model, 'getRawOriginal') ? $model->getRawOriginal() : $model->getOriginal();
-
-        return $this->read($model, is_array($original) ? $original : []);
+        return $this->read($model, RawOriginal::of($model));
     }
 
     /**
