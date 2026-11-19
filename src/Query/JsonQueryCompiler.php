@@ -57,7 +57,10 @@ final class JsonQueryCompiler extends RowQueryCompiler
             default => throw new UnsupportedTranslationQueryException('A JSON condition on any locale is not supported on the '.$this->driver($query).' driver; pass a locale.'),
         };
 
-        $query->whereRaw($sql, [$this->binding($query, $model, $field, $value)], $boolean);
+        // A wrapped column, fixed SQL per driver and an allowlisted operator; the value is a binding.
+        /** @var literal-string&non-falsy-string $raw */
+        $raw = $sql;
+        $query->whereRaw($raw, [$this->binding($query, $model, $field, $value)], $boolean);
     }
 
     protected function typed(Builder $query, Model $model, string $field, string $expression): string
