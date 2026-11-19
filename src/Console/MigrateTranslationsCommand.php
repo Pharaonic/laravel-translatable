@@ -59,14 +59,6 @@ class MigrateTranslationsCommand extends Command
             $this->comment('Dry run: nothing was written. Run again with --apply to copy.');
         }
 
-        $code = $this->printReport($report);
-
-        if ($apply && $code === 0) {
-            foreach (JsonCasts::advice($model, $report->from, $report->to, $this->translatedFields($model)) as $line) {
-                $this->comment($line);
-            }
-        }
-
-        return $code;
+        return $this->printReport($report);
     }
 }
