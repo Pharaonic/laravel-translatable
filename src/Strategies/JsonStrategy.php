@@ -233,7 +233,9 @@ final class JsonStrategy implements TranslationStrategy
             ->first($columns);
 
         if ($row === null) {
-            throw (new ModelNotFoundException)->setModel(get_class($model), [$model->getKey()]);
+            $key = $model->getKey();
+
+            throw (new ModelNotFoundException)->setModel(get_class($model), is_int($key) || is_string($key) ? [$key] : []);
         }
 
         return (array) $row;
