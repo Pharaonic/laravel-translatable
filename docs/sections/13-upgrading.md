@@ -22,7 +22,7 @@ The table strategy is the default and keeps the 2.x storage, so an existing data
 - Translated values are no longer raw attributes: use `getDirtyTranslations()`, `isTranslationDirty()` and `wasTranslationChanged()` instead of `getDirty()`.
 - `save()` is transactional and never deletes translations. Use `forgetTranslation()` or `forgetTranslations()`.
 - The protected `getTranslation(?string $locale)` is gone. `getTranslation('title', 'ar')` is public and returns a value.
-- `translated('ar')` needs at least one field with an Arabic value.
+- `translated('ar')` needs at least one field with an Arabic value, and `translated()` without a locale filters by the current locale. 2.x only eager loaded; use `withTranslations()` for that.
 - `whereTranslation()` no longer applies its operator to the locale, and only accepts the listed operators and `whereHas` / `orWhereHas`.
 - `translateOrDefault()` falls back to `app.fallback_locale`.
 - `make:translatable` renders stubs, takes `--table`, `--json`, `--columns` and `-m`, and never overwrites files.

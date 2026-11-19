@@ -6,6 +6,7 @@ namespace Pharaonic\Laravel\Translatable\Tests\Feature;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Pharaonic\Laravel\Translatable\Exceptions\InvalidLocaleException;
 use Pharaonic\Laravel\Translatable\Exceptions\UnknownTranslatableFieldException;
 use Pharaonic\Laravel\Translatable\Exceptions\UnsupportedTranslationQueryException;
@@ -77,7 +78,14 @@ final class QueryParityTest extends TestCase
 
         $this->assertSame(['p1', 'p3'], $this->slugs($class::translated('ar')));
         $this->assertSame(['p2'], $this->slugs($class::notTranslated('ar')));
-        $this->assertSame(['p1', 'p2', 'p3'], $this->slugs($class::translated()));
+
+        App::setLocale('ar');
+        $this->assertSame(['p1', 'p3'], $this->slugs($class::translated()), 'Without a locale, the current locale.');
+        $this->assertSame(['p2'], $this->slugs($class::notTranslated()));
+
+        App::setLocale('en');
+        $this->assertSame(['p1', 'p2'], $this->slugs($class::translated()));
+        $this->assertSame(['p3'], $this->slugs($class::notTranslated()), 'translated() and notTranslated() split the records.');
     }
 
     /**

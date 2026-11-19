@@ -20,16 +20,11 @@ final class TranslationScopes
     }
 
     /**
-     * At least one present field in the locale; without a locale, only eager loads (v2).
+     * At least one present field in the locale (the current locale when null).
      */
     public function translated(Builder $query, Model $model, ?string $locale): void
     {
         $this->withTranslations($query, $model, null);
-
-        if ($locale === null) {
-            return;
-        }
-
         $this->compiler($model)->whereAnyPresent($query, $model, $this->translator->fields($model)->names(), [$this->translator->locale($model, $locale)]);
     }
 

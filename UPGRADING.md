@@ -61,6 +61,7 @@ The payload only accepts the translated fields. 2.x copied any key into the tran
 ### Scopes
 
 - `translated('ar')` means at least one translated field has a value in Arabic. 2.x matched any row for the locale, even with every field null.
+- `translated()` without a locale filters by the current locale, like `notTranslated()`. 2.x did not filter at all and only eager loaded the translations; use `withTranslations()` for that.
 - `whereTranslation($field, $value, $locale, $action, $op)` no longer applies `$op` to the locale. `$op` must be `=`, `!=`, `<>`, `<`, `>`, `<=`, `>=`, `like` or `not like`, and `$action` must be `whereHas` or `orWhereHas`.
 - `translatedSorting()` orders by the translated value with missing values last, then by key.
 
