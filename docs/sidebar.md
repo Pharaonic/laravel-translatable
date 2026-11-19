@@ -12,6 +12,7 @@
   - [Generators](#generators)
   - [Changing Strategy](#changing-strategy)
   - [Octane & Queues](#octane)
+  - [AI Ready](#ai-ready)
   - [Upgrading from 2.x](#upgrading)
 - API Reference
   - [Methods & Classes](#api-reference)

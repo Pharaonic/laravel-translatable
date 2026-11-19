@@ -63,6 +63,10 @@ $post->getTranslation('title', 'ar');            // "مرحبا"
 Post::whereTranslation('title', 'Hello', 'en')->get();
 ```
 
+:::success AI Ready
+The package ships Laravel Boost resources, so your coding agent learns it with `php artisan boost:install`. See [AI Ready](#ai-ready).
+:::
+
 :::info Quick Tip
 Start with the default translations table. It keeps the storage of the 2.x releases, and you can move a model to JSON or columns later with the [strategy migration commands](#changing-strategy), without losing data.
 :::
