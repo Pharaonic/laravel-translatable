@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Pharaonic\Laravel\Translatable\Contracts\TranslationQueryCompiler;
 use Pharaonic\Laravel\Translatable\Exceptions\UnsupportedTranslationQueryException;
+use Pharaonic\Laravel\Translatable\Strategies\Table\TranslationsRelation;
 use Pharaonic\Laravel\Translatable\Strategies\TableStrategy;
 
 /**
@@ -123,7 +124,13 @@ final class TableQueryCompiler implements TranslationQueryCompiler
     public function withTranslations(Builder $query, Model $model, ?array $locales): void
     {
         $query->with(['translations' => function ($translations) use ($locales) {
-            if ($locales !== null && $translations instanceof HasMany) {
+            if ($locales === null) {
+                return;
+            }
+
+            if ($translations instanceof TranslationsRelation) {
+                $translations->onlyLocales($locales, self::LOCALE);
+            } elseif ($translations instanceof HasMany) {
                 $translations->whereIn($translations->getRelated()->qualifyColumn(self::LOCALE), $locales);
             }
         }]);

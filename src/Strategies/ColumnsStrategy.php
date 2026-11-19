@@ -39,7 +39,7 @@ final class ColumnsStrategy implements TranslationStrategy
         return LocaleColumnMapper::suffix($locale);
     }
 
-    public function stored(Model $model): array
+    public function stored(Model $model, ?string $locale = null): array
     {
         return $this->read($model, $model->getAttributes());
     }

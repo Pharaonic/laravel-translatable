@@ -48,7 +48,7 @@ final class JsonStrategy implements TranslationStrategy
         return $locale;
     }
 
-    public function stored(Model $model): array
+    public function stored(Model $model, ?string $locale = null): array
     {
         return $this->read($model, $model->getAttributes());
     }

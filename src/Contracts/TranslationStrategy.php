@@ -26,10 +26,12 @@ interface TranslationStrategy
 
     /**
      * Stored values, exactly as persisted (no fallback, no pending changes, no casts).
+     * With $locale, only that locale's values must be complete; a strategy may
+     * then skip loading the other locales.
      *
      * @return array<string, array<string, mixed>> field => locale => value
      */
-    public function stored(Model $model): array;
+    public function stored(Model $model, ?string $locale = null): array;
 
     /**
      * Values as last read from the database, before any unsaved change.

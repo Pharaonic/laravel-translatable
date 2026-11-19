@@ -14,6 +14,8 @@ use Pharaonic\Laravel\Translatable\Data\TranslationPatchSet;
 use Pharaonic\Laravel\Translatable\Exceptions\InvalidTranslatableDefinitionException;
 use Pharaonic\Laravel\Translatable\Query\TableQueryCompiler;
 use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
+use Pharaonic\Laravel\Translatable\Strategies\Table\PartialTranslations;
+use Pharaonic\Laravel\Translatable\Strategies\Table\TranslationsRelation;
 use Pharaonic\Laravel\Translatable\Support\CastResolver;
 
 /**
@@ -43,7 +45,14 @@ final class TableStrategy implements TranslationStrategy
 
     public function relation(Model $model): HasMany
     {
-        return $model->hasMany($this->translationModel($model), $this->foreignKey($model));
+        $class = $this->translationModel($model);
+        $related = new $class;
+
+        if ($related->getConnectionName() === null) {
+            $related->setConnection($model->getConnectionName());
+        }
+
+        return new TranslationsRelation($related->newQuery(), $model, $related->qualifyColumn($this->foreignKey($model)), $model->getKeyName());
     }
 
     /**
@@ -72,10 +81,18 @@ final class TableStrategy implements TranslationStrategy
     }
 
     /**
-     * The loaded translation records; loads them once when needed.
+     * The loaded translation records; loads them once when needed. Records
+     * eager loaded for some locales only are completed when another locale
+     * (or every locale, without $locale) is needed.
      */
-    public function records(Model $model, bool $attach = false): Collection
+    public function records(Model $model, bool $attach = false, ?string $locale = null): Collection
     {
+        $loaded = $model->relationLoaded('translations') ? $model->getRelation('translations') : null;
+
+        if ($loaded instanceof PartialTranslations && $model->exists && ($locale === null || ! $loaded->covers($locale))) {
+            $model->setRelation('translations', $this->complete($model, $loaded));
+        }
+
         if (! $model->relationLoaded('translations')) {
             // A model being created has no rows yet; cache the empty relation only when a record is staged on it.
             if (! $model->exists && ! $attach) {
@@ -95,9 +112,27 @@ final class TableStrategy implements TranslationStrategy
         return $records;
     }
 
+    /**
+     * Every stored record, keeping the instances (and their staged changes) of the partial load.
+     */
+    private function complete(Model $model, PartialTranslations $partial): Collection
+    {
+        $records = [];
+
+        foreach ([...$this->relation($model)->get()->all(), ...$partial->all()] as $record) {
+            $locale = $record instanceof Model ? $record->getAttribute(self::LOCALE_COLUMN) : null;
+
+            if ($record instanceof Model && is_string($locale)) {
+                $records[$locale] = $record;
+            }
+        }
+
+        return new Collection(array_values($records));
+    }
+
     public function record(Model $model, string $locale): ?Model
     {
-        foreach ($this->records($model) as $record) {
+        foreach ($this->records($model, false, $locale) as $record) {
             if ($record instanceof Model && $record->getAttribute(self::LOCALE_COLUMN) === $locale) {
                 return $record;
             }
@@ -133,15 +168,15 @@ final class TableStrategy implements TranslationStrategy
         return $locale;
     }
 
-    public function stored(Model $model): array
+    public function stored(Model $model, ?string $locale = null): array
     {
         $fields = $this->definitions->for($model)->all();
         $stored = [];
 
-        foreach ($this->records($model) as $record) {
-            $locale = $record instanceof Model ? $record->getAttribute(self::LOCALE_COLUMN) : null;
+        foreach ($this->records($model, false, $locale) as $record) {
+            $recordLocale = $record instanceof Model ? $record->getAttribute(self::LOCALE_COLUMN) : null;
 
-            if (! $record instanceof Model || ! is_string($locale)) {
+            if (! $record instanceof Model || ! is_string($recordLocale)) {
                 continue;
             }
 
@@ -149,7 +184,7 @@ final class TableStrategy implements TranslationStrategy
                 $value = $this->read($record, $definition);
 
                 if ($value !== null) {
-                    $stored[$field][$locale] = $value;
+                    $stored[$field][$recordLocale] = $value;
                 }
             }
         }

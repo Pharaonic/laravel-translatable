@@ -302,10 +302,10 @@ trait Translatable
      */
     public function getTranslationsAttribute(): Collection|array
     {
-        if (self::translatableService()->strategy($this) instanceof TableStrategy) {
-            $records = $this->getRelationValue('translations');
+        $strategy = self::translatableService()->strategy($this);
 
-            return $records instanceof Collection ? $records->keyBy('locale') : new Collection;
+        if ($strategy instanceof TableStrategy) {
+            return $strategy->records($this)->keyBy(TableStrategy::LOCALE_COLUMN);
         }
 
         return $this->getTranslations();

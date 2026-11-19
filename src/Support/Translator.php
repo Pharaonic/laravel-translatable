@@ -100,7 +100,7 @@ final class Translator
             return null;
         }
 
-        $stored = $this->strategy($model)->stored($model)[$field][$locale] ?? null;
+        $stored = $this->strategy($model)->stored($model, $locale)[$field][$locale] ?? null;
 
         return $this->casts->fromStorage($model, $definition, $stored);
     }
