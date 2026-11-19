@@ -45,7 +45,7 @@ A redesign with three storage strategies behind one API. The table strategy is t
 - The translations payload only accepts translated fields and follows mass-assignment rules; `$fillable` is no longer changed.
 - `translated($locale)` needs at least one present field, and `translated()` without a locale filters by the current locale instead of only eager loading; `whereTranslation()` no longer applies its operator to the locale and only accepts known operators.
 - `translateOrDefault()` falls back to `app.fallback_locale`; the legacy `Pharaonic.translatable.default` is no longer read.
-- `make:translatable` renders publishable stubs (`translatable-stubs`), takes `--table`, `--json` (which also casts the JSON columns) or `--columns` (the configured default without one) and `-m` for `--migrations`, never overwrites files and exits `0` on success.
+- `make:translatable` renders publishable stubs (`translatable-stubs`), takes `--table`, `--json` or `--columns` (the configured default without one) and `-m` for `--migrations`, never overwrites files and exits `0` on success.
 - Commands are registered only in the console.
 
 ### Fixed

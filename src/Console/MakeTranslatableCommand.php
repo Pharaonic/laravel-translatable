@@ -101,7 +101,6 @@ class MakeTranslatableCommand extends Command
             'class' => $class,
             'imports' => $marker === null ? '' : "use Pharaonic\\Laravel\\Translatable\\Contracts\\{$marker};\n",
             'implements' => $marker === null ? '' : " implements {$marker}",
-            'casts' => $strategy === 'json' ? "\n".JsonCasts::property(['title']) : '',
         ]));
 
         if ($strategy === 'table') {
