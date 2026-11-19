@@ -42,6 +42,9 @@ final class TableStrategy implements TranslationStrategy
         return 'table';
     }
 
+    /**
+     * @return HasMany<Model, Model>
+     */
     public function relation(Model $model): HasMany
     {
         $class = $this->translationModel($model);

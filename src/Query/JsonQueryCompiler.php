@@ -24,6 +24,9 @@ final class JsonQueryCompiler extends RowQueryCompiler
         parent::__construct($definitions);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function expression(Builder $query, Model $model, string $field, string $locale): string
     {
         return $this->wrap($query, $this->column($model, $field).'->'.$locale);
@@ -38,6 +41,9 @@ final class JsonQueryCompiler extends RowQueryCompiler
         return $locales;
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function whereValueInAnyLocale(Builder $query, Model $model, string $field, string $operator, mixed $value, string $boolean): void
     {
         if ($value === null) {
@@ -60,6 +66,9 @@ final class JsonQueryCompiler extends RowQueryCompiler
         $query->whereRaw($sql, [$this->binding($query, $model, $field, $value)], $boolean);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function typed(Builder $query, Model $model, string $field, string $expression): string
     {
         $type = $this->definition($model, $field)?->type;
@@ -75,6 +84,9 @@ final class JsonQueryCompiler extends RowQueryCompiler
         };
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function binding(Builder $query, Model $model, string $field, mixed $value): mixed
     {
         if (! is_bool($value)) {

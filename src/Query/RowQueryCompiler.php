@@ -21,6 +21,8 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
 
     /**
      * The wrapped SQL expression of one field in one locale.
+     *
+     * @param  Builder<Model>  $query
      */
     abstract protected function expression(Builder $query, Model $model, string $field, string $locale): string;
 
@@ -32,6 +34,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
      */
     abstract protected function locales(Model $model, array $locales): array;
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereAnyPresent(Builder $query, Model $model, array $fields, array $locales, string $boolean = 'and', bool $not = false): void
     {
         $locales = $this->locales($model, $locales);
@@ -46,6 +51,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         }, null, null, $boolean);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereValue(Builder $query, Model $model, string $field, string $operator, mixed $value, array $locales, string $boolean = 'and'): void
     {
         if ($locales === []) {
@@ -71,6 +79,8 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
 
     /**
      * The value of the field in any locale compares to the value.
+     *
+     * @param  Builder<Model>  $query
      */
     protected function whereValueInAnyLocale(Builder $query, Model $model, string $field, string $operator, mixed $value, string $boolean): void
     {
@@ -85,6 +95,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         $this->whereValue($query, $model, $field, $operator, $value, $locales, $boolean);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereValueIn(Builder $query, Model $model, string $field, array $values, string $locale, string $boolean = 'and', bool $not = false): void
     {
         if ($values === []) {
@@ -100,6 +113,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         $query->whereRaw($expression.($not ? ' not in (' : ' in (').$placeholders.')', $bindings, $boolean);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereProgress(Builder $query, Model $model, array $required, string $locale, string $operator, float $percentage): void
     {
         if ($required === []) {
@@ -116,6 +132,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         $query->whereRaw('('.implode(' + ', $cases).') * 100.0 / '.count($required).' '.$operator.' '.self::number($percentage));
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function orderBy(Builder $query, Model $model, string $field, array $locales, string $direction): void
     {
         $expressions = array_map(
@@ -128,16 +147,24 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
             ->orderByRaw($expression.' '.$direction);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function withTranslations(Builder $query, Model $model, ?array $locales): void {}
 
     /**
      * The expression compared or ordered for the field's declared type.
+     *
+     * @param  Builder<Model>  $query
      */
     protected function typed(Builder $query, Model $model, string $field, string $expression): string
     {
         return $expression;
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function binding(Builder $query, Model $model, string $field, mixed $value): mixed
     {
         return $value;
@@ -148,6 +175,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         return $this->definitions->for($model)->get($field);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function driver(Builder $query): string
     {
         $connection = $query->getQuery()->getConnection();
@@ -157,6 +187,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         return is_string($driver) ? $driver : '';
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function wrap(Builder $query, string $column): string
     {
         return $query->getQuery()->getGrammar()->wrap($column);
@@ -171,6 +204,9 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         return sprintf('%.6F', $value);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function constant(Builder $query, float $value, string $operator, float $percentage): void
     {
         $matches = match ($operator) {

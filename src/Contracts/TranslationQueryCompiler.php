@@ -19,6 +19,7 @@ interface TranslationQueryCompiler
      *
      * @param  list<string>  $fields
      * @param  list<string>  $locales
+     * @param  Builder<Model>  $query
      */
     public function whereAnyPresent(Builder $query, Model $model, array $fields, array $locales, string $boolean = 'and', bool $not = false): void;
 
@@ -26,6 +27,7 @@ interface TranslationQueryCompiler
      * A comparison on the value of the field in one of the locales, or in any locale when the list is empty.
      *
      * @param  list<string>  $locales
+     * @param  Builder<Model>  $query
      */
     public function whereValue(Builder $query, Model $model, string $field, string $operator, mixed $value, array $locales, string $boolean = 'and'): void;
 
@@ -33,6 +35,7 @@ interface TranslationQueryCompiler
      * The value of the field in the locale is one of the values.
      *
      * @param  list<mixed>  $values
+     * @param  Builder<Model>  $query
      */
     public function whereValueIn(Builder $query, Model $model, string $field, array $values, string $locale, string $boolean = 'and', bool $not = false): void;
 
@@ -40,6 +43,7 @@ interface TranslationQueryCompiler
      * The percentage of present required fields in the locale compares to the given number.
      *
      * @param  list<string>  $required
+     * @param  Builder<Model>  $query
      */
     public function whereProgress(Builder $query, Model $model, array $required, string $locale, string $operator, float $percentage): void;
 
@@ -47,6 +51,7 @@ interface TranslationQueryCompiler
      * Order by the value of the field in the first locale of the chain that has one; missing values last.
      *
      * @param  list<string>  $locales
+     * @param  Builder<Model>  $query
      */
     public function orderBy(Builder $query, Model $model, string $field, array $locales, string $direction): void;
 
@@ -54,6 +59,7 @@ interface TranslationQueryCompiler
      * Eager load whatever the strategy reads translations from.
      *
      * @param  list<string>|null  $locales
+     * @param  Builder<Model>  $query
      */
     public function withTranslations(Builder $query, Model $model, ?array $locales): void;
 }

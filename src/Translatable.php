@@ -285,7 +285,7 @@ trait Translatable
     /**
      * The real translations relation of the table strategy.
      *
-     * @return HasMany
+     * @return HasMany<Model, Model>
      */
     public function translations()
     {
@@ -463,21 +463,33 @@ trait Translatable
 
     // ---------------------------------------------------------------- scopes
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeTranslated(Builder $query, ?string $locale = null): void
     {
         self::translatableScopes()->translated($query, $this, $locale);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeNotTranslated(Builder $query, ?string $locale = null): void
     {
         self::translatableScopes()->notTranslated($query, $this, $locale);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeWhereHasTranslation(Builder $query, string $locale, ?string $field = null): void
     {
         self::translatableScopes()->whereHas($query, $this, $locale, $field);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeWhereMissingTranslation(Builder $query, string $locale, ?string $field = null): void
     {
         self::translatableScopes()->whereHas($query, $this, $locale, $field, true);
@@ -485,6 +497,8 @@ trait Translatable
 
     /**
      * v2 signature: $action is "whereHas" or "orWhereHas", $op a comparison operator. Eager loads the translations (v2).
+     *
+     * @param  Builder<Model>  $query
      */
     public function scopeWhereTranslation(Builder $query, string $field, mixed $value, ?string $locale = null, string $action = 'whereHas', string $op = '='): void
     {
@@ -498,18 +512,27 @@ trait Translatable
         self::translatableScopes()->where($query, $this, $field, $op, $value, $locale, $boolean);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeOrWhereTranslation(Builder $query, string $field, mixed $value, ?string $locale = null): void
     {
         self::translatableScopes()->withTranslations($query, $this, null);
         self::translatableScopes()->where($query, $this, $field, '=', $value, $locale, 'or');
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeWhereTranslationLike(Builder $query, string $field, string $pattern, ?string $locale = null): void
     {
         self::translatableScopes()->withTranslations($query, $this, null);
         self::translatableScopes()->where($query, $this, $field, 'like', $pattern, $locale);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeOrWhereTranslationLike(Builder $query, string $field, string $pattern, ?string $locale = null): void
     {
         self::translatableScopes()->withTranslations($query, $this, null);
@@ -518,6 +541,7 @@ trait Translatable
 
     /**
      * @param  iterable<mixed>  $values
+     * @param  Builder<Model>  $query
      */
     public function scopeWhereTranslationIn(Builder $query, string $field, iterable $values, ?string $locale = null): void
     {
@@ -526,17 +550,24 @@ trait Translatable
 
     /**
      * @param  iterable<mixed>  $values
+     * @param  Builder<Model>  $query
      */
     public function scopeWhereTranslationNotIn(Builder $query, string $field, iterable $values, ?string $locale = null): void
     {
         self::translatableScopes()->whereIn($query, $this, $field, $values, $locale, true);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeWhereTranslationProgress(Builder $query, string $locale, string $operator, int|float $percentage): void
     {
         self::translatableScopes()->whereProgress($query, $this, $locale, $operator, $percentage);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function scopeOrderByTranslation(Builder $query, string $field, string $direction = 'asc', ?string $locale = null, bool $fallback = false): void
     {
         self::translatableScopes()->orderBy($query, $this, $field, $direction, $locale, $fallback);
@@ -544,6 +575,8 @@ trait Translatable
 
     /**
      * v2: records translated in the locale, ordered by the field, then by key.
+     *
+     * @param  Builder<Model>  $query
      */
     public function scopeTranslatedSorting(Builder $query, string $locale, string $field, string $method = 'asc'): void
     {
@@ -557,6 +590,7 @@ trait Translatable
 
     /**
      * @param  string|list<string>|null  $locales
+     * @param  Builder<Model>  $query
      */
     public function scopeWithTranslations(Builder $query, string|array|null $locales = null): void
     {
