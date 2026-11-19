@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
 use Pharaonic\Laravel\Translatable\TranslatableServiceProvider;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ServiceProviderTest extends TestCase
 {
@@ -24,6 +25,7 @@ final class ServiceProviderTest extends TestCase
     /**
      * @dataProvider publishTags
      */
+    #[DataProvider('publishTags')]
     public function test_it_publishes_the_configuration_under_the_package_tags(string $tag): void
     {
         $paths = ServiceProvider::pathsToPublish(TranslatableServiceProvider::class, $tag);
