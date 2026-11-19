@@ -47,7 +47,7 @@ It compares every record and exits with `1` when any differs.
 
 ### 5. Switch
 
-Deploy the marker (`implements JsonTranslatable`) or the configuration. The old storage stays until you drop it yourself.
+Deploy the marker (`implements JsonTranslatable`) or the configuration. Moving to json, add `array` casts for the translated columns; moving away from json, remove them. `translatable:make-schema` and `translatable:migrate --apply` print the exact `$casts` change for the model. The old storage stays until you drop it yourself.
 
 ### Undo
 
