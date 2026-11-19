@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## 12.0.0 - Unreleased
+## 12.0.0 - 2026-11-19
 
 The 10.0.0 release for Laravel 12: the same code, API and changes as 6.0.0 and 10.0.0 below, including the Laravel Boost resources.
 
@@ -10,7 +10,7 @@ The 10.0.0 release for Laravel 12: the same code, API and changes as 6.0.0 and 1
 
 - Laravel 12 on PHP 8.2, 8.3, 8.4 and 8.5. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
 
-## 11.0.0 - Unreleased
+## 11.0.0 - 2026-11-19
 
 The 10.0.0 release for Laravel 11: the same code, API and changes as 6.0.0 and 10.0.0 below, including the Laravel Boost resources.
 
@@ -18,7 +18,7 @@ The 10.0.0 release for Laravel 11: the same code, API and changes as 6.0.0 and 1
 
 - Laravel 11 on PHP 8.2, 8.3 and 8.4. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
 
-## 10.0.0 - Unreleased
+## 10.0.0 - 2026-11-19
 
 The 6.0.0 redesign for Laravel 10: the same code, API and changes as 6.0.0 below.
 
@@ -30,7 +30,7 @@ The 6.0.0 redesign for Laravel 10: the same code, API and changes as 6.0.0 below
 
 - Laravel 10 on PHP 8.1, 8.2 and 8.3. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
 
-## 9.0.0 - Unreleased
+## 9.0.0 - 2026-11-19
 
 The 6.0.0 redesign for Laravel 9: the same code, API and changes as 6.0.0 below.
 
@@ -38,7 +38,7 @@ The 6.0.0 redesign for Laravel 9: the same code, API and changes as 6.0.0 below.
 
 - Laravel 9.33+ on PHP 8.0, 8.1 and 8.2. The package requires the `illuminate/*` components it uses instead of `laravel/framework`. 9.33 is the first Laravel 9 release whose Carbon works on PHP 8.2.
 
-## 8.0.0 - Unreleased
+## 8.0.0 - 2026-11-19
 
 The 6.0.0 redesign for Laravel 8: the same code, API and changes as 6.0.0 below.
 
@@ -46,7 +46,7 @@ The 6.0.0 redesign for Laravel 8: the same code, API and changes as 6.0.0 below.
 
 - Laravel 8.75+ on PHP 8.0 and 8.1. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
 
-## 7.0.0 - Unreleased
+## 7.0.0 - 2026-11-19
 
 The 6.0.0 redesign for Laravel 7: the same code, API and changes as 6.0.0 below.
 
@@ -54,7 +54,7 @@ The 6.0.0 redesign for Laravel 7: the same code, API and changes as 6.0.0 below.
 
 - Laravel 7.30+ on PHP 8.0. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
 
-## 6.0.0 - Unreleased
+## 6.0.0 - 2026-11-19
 
 A redesign with three storage strategies behind one API. The table strategy is the default and keeps the 2.x storage. 2.x applications follow `UPGRADING.md`.
 
