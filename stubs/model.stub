@@ -1,0 +1,23 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+{{ imports }}use Pharaonic\Laravel\Translatable\Translatable;
+
+class {{ class }} extends Model{{ implements }}
+{
+    use Translatable;
+
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = ['title'];
+
+    /**
+     * Translated fields.
+     *
+     * @var array<int, string>
+     */
+    protected $translatables = ['title'];
+}
