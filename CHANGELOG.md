@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## 7.0.0 - Unreleased
+## 7.0.0 - 2026-11-19
 
 The 6.0.0 redesign for Laravel 7: the same code, API and changes as 6.0.0 below.
 
@@ -10,7 +10,7 @@ The 6.0.0 redesign for Laravel 7: the same code, API and changes as 6.0.0 below.
 
 - Laravel 7.30+ on PHP 8.0. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
 
-## 6.0.0 - Unreleased
+## 6.0.0 - 2026-11-19
 
 A redesign with three storage strategies behind one API. The table strategy is the default and keeps the 2.x storage. 2.x applications follow `UPGRADING.md`.
 
