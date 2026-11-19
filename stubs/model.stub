@@ -20,4 +20,4 @@ class {{ class }} extends Model{{ implements }}
      * @var array<int, string>
      */
     protected $translatables = ['title'];
-}
+{{ casts }}}

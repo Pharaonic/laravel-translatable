@@ -72,6 +72,10 @@ class MakeTranslationSchemaCommand extends Command
 
         $this->info("Created [{$path}]. Review it, run it, then use translatable:migrate.");
 
+        foreach (JsonCasts::advice($model, $this->currentLayout($model), $strategy, $this->translatedFields($model)) as $line) {
+            $this->comment($line);
+        }
+
         return 0;
     }
 }
