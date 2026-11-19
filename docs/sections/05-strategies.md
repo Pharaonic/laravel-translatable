@@ -78,8 +78,6 @@ class Post extends Model implements JsonTranslatable
     use Translatable;
 
     protected $translatables = ['title', 'content'];
-
-    protected $casts = ['title' => 'array', 'content' => 'array'];
 }
 ```
 
@@ -92,7 +90,7 @@ Schema::create('posts', function (Blueprint $table) {
 });
 ```
 
-Cast each JSON column to `array`, so code that reads the raw column (`getAttributes()`, a query without the package) gets the locales instead of a string. The package itself reads and writes these columns raw, so a cast never changes what it stores, and the value types come from `translatable()`, not from `$casts`.
+The json strategy needs no `$casts`: the package reads and writes these columns itself, and the value types come from `translatable()`. Casts you add on them anyway do no harm.
 
 A save locks the row, reads the stored JSON again, and writes back only the locales you changed, so two requests that write different locales both keep their values.
 
