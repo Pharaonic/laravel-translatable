@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## 9.0.0 - Unreleased
+
+The 6.0.0 redesign for Laravel 9: the same code, API and changes as 6.0.0 below.
+
+### Compatibility
+
+- Laravel 9.33+ on PHP 8.0, 8.1 and 8.2. The package requires the `illuminate/*` components it uses instead of `laravel/framework`. 9.33 is the first Laravel 9 release whose Carbon works on PHP 8.2.
+
 ## 8.0.0 - Unreleased
 
 The 6.0.0 redesign for Laravel 8: the same code, API and changes as 6.0.0 below.
