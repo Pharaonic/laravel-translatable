@@ -19,13 +19,13 @@ breadcrumbs:
 card:
   topic: localization
   icon: translate
-  tags: translation translatable multilingual i18n localization eloquent json columns locale fallback slug
+  tags: translation translatable multilingual i18n localization eloquent json columns locale fallback
   description: Translated Eloquent fields with one API and three storage strategies, a translations table, JSON columns or a column per locale, with fallbacks, typed fields, scopes, transactional saves and commands to move data between strategies.
 
 seo:
   title: "{package.fullName} - Multilingual Eloquent Models for Laravel"
   description: "{package.name} is a Laravel package for translated Eloquent fields stored in a translations table, JSON columns or a column per locale, with one API, fallbacks and scopes. {package.downloadsShort}+ downloads, {package.license} licensed."
-  keywords: laravel translatable, laravel translations, multilingual eloquent, translatable models, laravel json translations, laravel i18n, eloquent locale, translated slugs
+  keywords: laravel translatable, laravel translations, multilingual eloquent, translatable models, laravel json translations, laravel i18n, eloquent locale, translation fallback
   author: Pharaonic
   images:
     - "{package.cover}"

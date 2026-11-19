@@ -74,8 +74,6 @@
 | `Contracts\FallbackPolicy` | `chain(Model $model, string $field, string $locale): array` |
 | `Data\ResolvedTranslation` | `field`, `value`, `requestedLocale`, `resolvedLocale`, `isFallback`, `isMissing` |
 | `Data\LocaleTranslation` | One locale of a json or columns model: `getLocale()`, `getModel()`, property and array access, `toArray()` |
-| `Integrations\Sluggable\HasTranslatedSlugs` | `getLocalizedSlug()`, `findByTranslatedSlug()` |
-| `Integrations\Seo\TranslatableSeo` | `apply()`, `publishedLocales()` |
 
 ### Exceptions
 

@@ -4,7 +4,7 @@ The package is safe under Laravel Octane and in queue workers:
 
 - pending translation changes live on each model instance, never in a shared service;
 - `translatable.strategy`, `app.locale` and `app.fallback_locale` are read on every call, so each request's `App::setLocale()` applies;
-- request-bound services (your `FallbackPolicy`, the SEO manager, database transactions) are resolved from the current request's container;
+- request-bound services (your `FallbackPolicy`, database transactions) are resolved from the current request's container;
 - the shared caches hold only class metadata and table column lists, keyed by connection, database and table, so tenants on other databases never share them.
 
 :::warning Reload After Schema Changes

@@ -20,8 +20,6 @@ A redesign with three storage strategies behind one API. The table strategy is t
 - `TranslationSet`, `TranslationRemoved` and `TranslationsMigrated` events, dispatched after the save's transaction commits.
 - A `FallbackPolicy` contract for custom fallback chains.
 - `translatable:inspect`, `translatable:make-schema`, `translatable:migrate`, `translatable:verify` and `translatable:rollback`: dry-run by default, resumable, journaled copies between any two strategies that never change the source.
-- `HasTranslatedSlugs`: per-locale slugs from each locale's own value, unique per locale, for every strategy.
-- `TranslatableSeo`: title and description for pharaonic/laravel-seo from exact values, and hreflang and canonical links only for complete locales with a URL.
 
 ### Changed
 

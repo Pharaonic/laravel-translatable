@@ -11,7 +11,6 @@
   - [Saving & Events](#saving-and-events)
   - [Generators](#generators)
   - [Changing Strategy](#changing-strategy)
-  - [Slugs & SEO](#slugs-and-seo)
   - [Octane & Queues](#octane)
   - [Upgrading from 2.x](#upgrading)
 - API Reference

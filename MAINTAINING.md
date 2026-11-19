@@ -14,14 +14,14 @@ The code therefore stays compatible with PHP 8.0 and Laravel 6: no enums, `reado
 
 ## Core library
 
-None. The package is Eloquent glue; the slug integration uses `pharaonic/php-slugify` only when it is installed.
+None. The package is Eloquent glue.
 
 ## Public API invariants
 
 Configuration keys (`translatable.*`), publish tags (`pharaonic`, `laravel-translatable`, `translatable-config`, `translatable-stubs`), the stub names in `stubs/`, and the `make:translatable`, `translatable:inspect`, `translatable:make-schema`, `translatable:migrate`, `translatable:verify` and `translatable:rollback` commands are public API.
 
 - The configuration lives at `config/translatable.php` under `translatable.*`, not `pharaonic.translatable`: the owner's v3 specification fixed `config('translatable.strategy')`. The legacy `Pharaonic.translatable.default` key is not read.
-- The `Translatable` trait's public methods and scopes, the three marker interfaces, `FallbackPolicy`, the `ResolvedTranslation`, `LocaleTranslation` and `MigrationReport` data classes, the events in `src/Events`, the exceptions in `src/Exceptions`, `HasTranslatedSlugs` and `TranslatableSeo`. Classes marked `@internal` are not.
+- The `Translatable` trait's public methods and scopes, the three marker interfaces, `FallbackPolicy`, the `ResolvedTranslation`, `LocaleTranslation` and `MigrationReport` data classes, the events in `src/Events`, and the exceptions in `src/Exceptions`. Classes marked `@internal` are not.
 - The 2.x table conventions: `getTranslatableModel()`, `getTranslatableField()`, the `locale` column and the `$translationsKey` payload key (default `locale`).
 
 ## Package-specific constraints
@@ -29,10 +29,10 @@ Configuration keys (`translatable.*`), publish tags (`pharaonic`, `laravel-trans
 - Exactly three strategies. A model's strategy is exactly one marker interface, else `config('translatable.strategy')`, else `table`. Never a model property, method, attribute or per-field option. Changing it never moves data.
 - The configuration has one key, `strategy`. Locales come from `app.locale` and `app.fallback_locale`; storage names are conventions (JSON column = field, `{field}_{locale}` columns with the locales the table has). Add keys only with a concrete need, and with the owner.
 - On a columns-strategy table, a column named `{field}_{2–3 letters}` reads as a locale of that field; other columns must not use that pattern.
-- No translation workflow (states, review, publication): the owner left it out of the package.
-- A `save()` never deletes translations; exact reads never fall back; a fallback never creates a slug, an hreflang link or a canonical URL.
+- No translation workflow (states, review, publication), and no slug or SEO integration: the owner left them out of the package.
+- A `save()` never deletes translations; exact reads never fall back.
 - Every field and locale is validated before it reaches SQL; values are always bound. JSON and columns identifiers come only from validated field names and locale tags.
-- The services are singletons that are safe under Octane: pending changes live on the model, config and the locale are read on every call, caches hold only class metadata and schema columns (keyed by connection, database and table), and a request-bound service (fallback policy, `db.transactions`, `pharaonic-seo`) is resolved from `Container::getInstance()` at call time. Never inject the container or a request-bound service into a singleton.
+- The services are singletons that are safe under Octane: pending changes live on the model, config and the locale are read on every call, caches hold only class metadata and schema columns (keyed by connection, database and table), and a request-bound service (fallback policy, `db.transactions`) is resolved from `Container::getInstance()` at call time. Never inject the container or a request-bound service into a singleton.
 - The traits are analysed by PHPStan only through `tests/Fixtures`, which use them.
 - The test suite runs on SQLite by default; it is not run in Docker. `TRANSLATABLE_DB=mysql|mariadb|pgsql` with `TRANSLATABLE_DB_HOST`, `_PORT`, `_DATABASE`, `_USERNAME` and `_PASSWORD` runs it on a server, which also enables the parallel-writer tests (they need `pcntl`). CI runs the suite on MySQL 8.4, MariaDB 11 and PostgreSQL 16 in the `databases` job of `build.yml`, a package-specific addition to the template workflow; keep it when syncing the workflow from the template.
 

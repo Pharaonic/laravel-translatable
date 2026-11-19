@@ -9,4 +9,4 @@ buttons:
     icon: arrow-right
 ---
 
-Read the full documentation for installation, the three strategies, field definitions, querying, saving and events, the generators, moving between strategies, translated slugs and SEO, Octane, and upgrading from 2.x.
+Read the full documentation for installation, the three strategies, field definitions, querying, saving and events, the generators, moving between strategies, Octane, and upgrading from 2.x.

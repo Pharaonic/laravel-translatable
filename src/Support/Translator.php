@@ -445,7 +445,6 @@ final class Translator
      */
     public function save(Model $model, array $options, Closure $parentSave): bool
     {
-        $this->beforeSaving($model);
         $strategy = $this->strategy($model);
         $patch = $this->patch($model);
         $this->prune($model, $patch);
@@ -509,10 +508,6 @@ final class Translator
      */
     public function onSaving(Model $model): void
     {
-        if (! $this->isSaving($model)) {
-            $this->beforeSaving($model);
-        }
-
         $this->strategy($model)->prepare($model, $this->patch($model));
     }
 
@@ -603,16 +598,6 @@ final class Translator
         }
 
         return $patch;
-    }
-
-    /**
-     * The model's beforeSavingTranslations() hook (translated slugs), before anything is written.
-     */
-    private function beforeSaving(Model $model): void
-    {
-        if (method_exists($model, 'beforeSavingTranslations')) {
-            $model->beforeSavingTranslations();
-        }
     }
 
     private function resetPatch(Model $model): void

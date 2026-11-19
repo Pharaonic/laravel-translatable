@@ -2,7 +2,7 @@
 
 ### 1. A Multilingual Blog
 
-A table-strategy post with its translations, a locale from the URL, and a lookup by translated slug.
+A table-strategy post with typed, required fields and a locale from the URL.
 
 - ===Model
 
@@ -10,12 +10,10 @@ A table-strategy post with its translations, a locale from the URL, and a lookup
   namespace App;
 
   use Illuminate\Database\Eloquent\Model;
-  use Pharaonic\Laravel\Translatable\Integrations\Sluggable\HasTranslatedSlugs;
   use Pharaonic\Laravel\Translatable\Translatable;
 
   class Post extends Model
   {
-      use HasTranslatedSlugs;
       use Translatable;
 
       protected $fillable = ['published', 'locale'];
@@ -25,13 +23,7 @@ A table-strategy post with its translations, a locale from the URL, and a lookup
           return [
               'title' => ['type' => 'string', 'required' => true],
               'content' => ['required' => true],
-              'slug' => ['type' => 'string'],
           ];
-      }
-
-      public function translatedSlugs(): array
-      {
-          return ['slug' => 'title'];
       }
   }
   ```
@@ -73,10 +65,9 @@ A table-strategy post with its translations, a locale from the URL, and a lookup
           return view('posts.index', compact('posts'));
       }
 
-      public function show(string $locale, string $slug)
+      public function show(string $locale, Post $post)
       {
-          $post = Post::findByTranslatedSlug($slug, $locale);
-          abort_if($post === null, 404);
+          abort_unless($post->hasCompleteTranslation($locale), 404);
 
           return view('posts.show', compact('post'));
       }
@@ -88,7 +79,7 @@ A table-strategy post with its translations, a locale from the URL, and a lookup
   ```php title="routes/web.php"
   Route::middleware('locale')->prefix('{locale}')->group(function () {
       Route::get('posts', 'PostController@index');
-      Route::get('posts/{slug}', 'PostController@show');
+      Route::get('posts/{post}', 'PostController@show');
   });
   ```
 
