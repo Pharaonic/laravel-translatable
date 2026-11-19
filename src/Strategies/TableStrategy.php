@@ -17,6 +17,7 @@ use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
 use Pharaonic\Laravel\Translatable\Strategies\Table\PartialTranslations;
 use Pharaonic\Laravel\Translatable\Strategies\Table\TranslationsRelation;
 use Pharaonic\Laravel\Translatable\Support\CastResolver;
+use Pharaonic\Laravel\Translatable\Support\RawOriginal;
 
 /**
  * One translation row per model and locale, through a real HasMany relation.
@@ -302,7 +303,7 @@ final class TableStrategy implements TranslationStrategy
 
         foreach ($items as $record) {
             if ($record instanceof Model) {
-                $states[] = [$record, $record->exists, $record->getAttributes(), method_exists($record, 'getRawOriginal') ? $record->getRawOriginal() : $record->getOriginal()];
+                $states[] = [$record, $record->exists, $record->getAttributes(), RawOriginal::of($record)];
             }
         }
 
@@ -424,7 +425,7 @@ final class TableStrategy implements TranslationStrategy
 
     private static function raw(Model $record, string $key): mixed
     {
-        return method_exists($record, 'getRawOriginal') ? $record->getRawOriginal($key) : $record->getOriginal($key);
+        return RawOriginal::of($record)[$key] ?? null;
     }
 
     private static function isUniqueViolation(QueryException $exception): bool

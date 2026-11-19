@@ -5,7 +5,7 @@ Install the package with Composer. Laravel discovers the service provider automa
 ### Requirements
 
 - PHP 8.0
-- Laravel 6.20 or newer within 6.x
+- Laravel 7.30 or newer within 7.x
 - A database supported by Laravel: SQLite, MySQL, MariaDB or PostgreSQL
 
 ### Composer Installation

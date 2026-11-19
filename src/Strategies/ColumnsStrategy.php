@@ -11,6 +11,7 @@ use Pharaonic\Laravel\Translatable\Query\ColumnsQueryCompiler;
 use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
 use Pharaonic\Laravel\Translatable\Resolution\LocaleColumnMapper;
 use Pharaonic\Laravel\Translatable\Support\CastResolver;
+use Pharaonic\Laravel\Translatable\Support\RawOriginal;
 
 /**
  * One column per field and locale on the model's table: title_en, title_ar,
@@ -46,9 +47,7 @@ final class ColumnsStrategy implements TranslationStrategy
 
     public function original(Model $model): array
     {
-        $original = method_exists($model, 'getRawOriginal') ? $model->getRawOriginal() : $model->getOriginal();
-
-        return $this->read($model, is_array($original) ? $original : []);
+        return $this->read($model, RawOriginal::of($model));
     }
 
     /**
