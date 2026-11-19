@@ -19,8 +19,7 @@ final class JsonAdapter implements StorageAdapter
         private DefinitionResolver $definitions,
         private SchemaInspector $schema,
         private Canonical $canonical,
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {

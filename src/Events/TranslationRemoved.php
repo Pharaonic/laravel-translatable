@@ -15,6 +15,5 @@ final class TranslationRemoved
         public string $field,
         public string $locale,
         public mixed $previous,
-    ) {
-    }
+    ) {}
 }

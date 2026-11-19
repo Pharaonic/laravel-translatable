@@ -16,9 +16,7 @@ use Pharaonic\Laravel\Translatable\Support\Translator;
  */
 final class LocaleTranslation implements ArrayAccess, JsonSerializable
 {
-    public function __construct(private Translator $translator, private Model $model, private string $locale)
-    {
-    }
+    public function __construct(private Translator $translator, private Model $model, private string $locale) {}
 
     public function getLocale(): string
     {

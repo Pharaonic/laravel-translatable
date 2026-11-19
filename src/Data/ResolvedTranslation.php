@@ -14,6 +14,5 @@ final class ResolvedTranslation
         public ?string $resolvedLocale,
         public bool $isFallback,
         public bool $isMissing,
-    ) {
-    }
+    ) {}
 }

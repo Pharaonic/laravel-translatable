@@ -15,9 +15,7 @@ use RuntimeException;
  */
 final class Journal
 {
-    public function __construct(private string $directory)
-    {
-    }
+    public function __construct(private string $directory) {}
 
     /**
      * @param  list<string>  $fields

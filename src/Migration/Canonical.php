@@ -15,9 +15,7 @@ use Pharaonic\Laravel\Translatable\Support\CastResolver;
  */
 final class Canonical
 {
-    public function __construct(private DefinitionResolver $definitions, private CastResolver $casts)
-    {
-    }
+    public function __construct(private DefinitionResolver $definitions, private CastResolver $casts) {}
 
     /**
      * A stored value (from any layout) in canonical form.

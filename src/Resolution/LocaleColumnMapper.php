@@ -23,9 +23,7 @@ final class LocaleColumnMapper
      */
     private const SUFFIX = '/^[a-z]{2,3}(_[a-z]{4})?(_([a-z]{2}|[0-9]{3}))?$/';
 
-    public function __construct(private SchemaInspector $schema, private DefinitionResolver $definitions)
-    {
-    }
+    public function __construct(private SchemaInspector $schema, private DefinitionResolver $definitions) {}
 
     public function jsonColumn(Model $model, string $field): string
     {

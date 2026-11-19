@@ -13,6 +13,5 @@ final class TranslationsMigrated
         public string $to,
         public string $migrationId,
         public int $records,
-    ) {
-    }
+    ) {}
 }

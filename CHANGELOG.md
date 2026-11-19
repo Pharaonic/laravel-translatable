@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here.
 
+## 10.0.0 - Unreleased
+
+The 6.0.0 redesign for Laravel 10: the same code, API and changes as 6.0.0 below.
+
+### Added
+
+- Laravel Boost resources: a `resources/boost/guidelines/core.blade.php` guideline and a `translatable-development` skill, installed into your coding agent by `php artisan boost:install`.
+
+### Compatibility
+
+- Laravel 10 on PHP 8.1, 8.2 and 8.3. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
+
 ## 9.0.0 - Unreleased
 
 The 6.0.0 redesign for Laravel 9: the same code, API and changes as 6.0.0 below.

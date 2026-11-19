@@ -14,9 +14,7 @@ final class FieldRegistry
     /**
      * @param  array<string, TranslationDefinition>  $fields
      */
-    public function __construct(private array $fields)
-    {
-    }
+    public function __construct(private array $fields) {}
 
     public function has(string $field): bool
     {

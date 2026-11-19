@@ -7,6 +7,4 @@ use LogicException;
 /**
  * The query cannot be compiled correctly for the strategy or database.
  */
-final class UnsupportedTranslationQueryException extends LogicException implements TranslatableException
-{
-}
+final class UnsupportedTranslationQueryException extends LogicException implements TranslatableException {}

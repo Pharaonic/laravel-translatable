@@ -7,6 +7,4 @@ use LogicException;
 /**
  * A model's translated fields, or its translation options, are declared incorrectly.
  */
-final class InvalidTranslatableDefinitionException extends LogicException implements TranslatableException
-{
-}
+final class InvalidTranslatableDefinitionException extends LogicException implements TranslatableException {}

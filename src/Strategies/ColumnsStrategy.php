@@ -27,8 +27,7 @@ final class ColumnsStrategy implements TranslationStrategy
         private LocaleColumnMapper $mapper,
         private CastResolver $casts,
         private ColumnsQueryCompiler $compiler,
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {
@@ -117,26 +116,18 @@ final class ColumnsStrategy implements TranslationStrategy
         $model->setRawAttributes(array_replace($model->getAttributes(), $updates));
     }
 
-    public function persist(Model $model, TranslationPatchSet $changes): void
-    {
-    }
+    public function persist(Model $model, TranslationPatchSet $changes): void {}
 
-    public function delete(Model $model): void
-    {
-    }
+    public function delete(Model $model): void {}
 
     public function snapshot(Model $model): mixed
     {
         return null;
     }
 
-    public function restore(Model $model, mixed $snapshot): void
-    {
-    }
+    public function restore(Model $model, mixed $snapshot): void {}
 
-    public function flush(Model $model): void
-    {
-    }
+    public function flush(Model $model): void {}
 
     public function isLoaded(Model $model): bool
     {

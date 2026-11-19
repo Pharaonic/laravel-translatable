@@ -9,6 +9,8 @@ badges:
     color: purple
   - label: "{package.downloadsShort}+ downloads"
     color: blue
+  - label: AI Ready · Laravel Boost
+    color: purple
 eyebrow: "{package.name}"
 title: One API,
 highlight: three ways to store translations
@@ -27,4 +29,4 @@ labels:
   copied: Copied!
 ---
 
-Laravel Translatable lets each Eloquent model choose where its translations live: a **translations table**, a **JSON column per field**, or a **column per field and locale**. You write `$post->title`, `setTranslation()` and `whereTranslation()` the same way for all three, and move a model from one storage to another later without losing a translation.
+Laravel Translatable lets each Eloquent model choose where its translations live: a **translations table**, a **JSON column per field**, or a **column per field and locale**. You write `$post->title`, `setTranslation()` and `whereTranslation()` the same way for all three, and move a model from one storage to another later without losing a translation. It is AI ready: `php artisan boost:install` teaches your coding agent the whole package through Laravel Boost.

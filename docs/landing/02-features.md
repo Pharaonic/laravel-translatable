@@ -20,7 +20,7 @@ items:
   - icon: switch
     title: Move Between Them
     text: "`translatable:migrate` copies a model's translations to another strategy, `translatable:verify` checks them, `translatable:rollback` undoes it."
-  - icon: shield-check
-    title: Safe Saves
-    text: One transaction per save, concurrent writers of other locales kept, events after commit.
+  - icon: bot
+    title: AI Ready
+    text: "Ships a Laravel Boost guideline and a `translatable-development` skill, so `php artisan boost:install` teaches Claude Code, Cursor, Codex or Copilot the whole API."
 ---

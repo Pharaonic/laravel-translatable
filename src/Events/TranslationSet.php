@@ -16,6 +16,5 @@ final class TranslationSet
         public string $locale,
         public mixed $value,
         public mixed $previous,
-    ) {
-    }
+    ) {}
 }

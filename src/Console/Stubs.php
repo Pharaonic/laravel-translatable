@@ -15,9 +15,7 @@ final class Stubs
 {
     public const DIRECTORY = __DIR__.'/../../stubs';
 
-    public function __construct(private Application $app)
-    {
-    }
+    public function __construct(private Application $app) {}
 
     /**
      * @param  array<string, string>  $replacements  placeholder => value, for {{ placeholder }}

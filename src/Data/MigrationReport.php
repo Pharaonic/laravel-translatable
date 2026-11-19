@@ -24,8 +24,7 @@ final class MigrationReport
         public int $mismatches = 0,
         public array $issues = [],
         public array $samples = [],
-    ) {
-    }
+    ) {}
 
     public function successful(): bool
     {

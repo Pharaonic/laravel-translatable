@@ -50,7 +50,7 @@ body:
     id: laravel-version
     attributes:
       label: Laravel version
-      placeholder: "e.g. 9.52.16"
+      placeholder: "e.g. 10.48.29"
     validations:
       required: true
 

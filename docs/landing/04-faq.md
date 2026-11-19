@@ -34,6 +34,10 @@ Yes. `translatable:make-schema` writes the new storage's migration, `translatabl
 
 No. The table strategy keeps the 2.x storage. Rename `$translatableAttributes` to `$translatables`, check the upgrade guide for behavior changes, and run your tests.
 
+## Is {package.name} AI ready?
+
+Yes. It ships a Laravel Boost guideline and a `translatable-development` skill. Run `php artisan boost:install` in an application that uses Laravel Boost, and your coding agent (Claude Code, Cursor, Codex, Copilot…) learns the package's strategies, API and commands.
+
 ## Does it work with Laravel Octane?
 
 Yes. Pending changes live on each model, and the locale and configuration are read on every call. Reload the workers after adding a locale column.
