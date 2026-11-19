@@ -15,9 +15,7 @@ use Pharaonic\Laravel\Translatable\Support\Translator;
  */
 final class TranslationScopes
 {
-    public function __construct(private Translator $translator)
-    {
-    }
+    public function __construct(private Translator $translator) {}
 
     /**
      * At least one present field in the locale (the current locale when null).

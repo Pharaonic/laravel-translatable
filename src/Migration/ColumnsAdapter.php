@@ -16,8 +16,7 @@ final class ColumnsAdapter implements StorageAdapter
         private LocaleColumnMapper $columns,
         private DefinitionResolver $definitions,
         private Canonical $canonical,
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {

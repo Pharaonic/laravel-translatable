@@ -32,8 +32,7 @@ final class Migrator
         private JsonAdapter $json,
         private ColumnsAdapter $columns,
         private DefinitionResolver $definitions,
-    ) {
-    }
+    ) {}
 
     public function adapter(string $name): StorageAdapter
     {

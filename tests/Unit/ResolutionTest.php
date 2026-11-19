@@ -25,25 +25,15 @@ class PlainModel extends Model
     protected $translatables = ['title'];
 }
 
-class TableMarked extends PlainModel implements TableTranslatable
-{
-}
+class TableMarked extends PlainModel implements TableTranslatable {}
 
-class JsonMarked extends PlainModel implements JsonTranslatable
-{
-}
+class JsonMarked extends PlainModel implements JsonTranslatable {}
 
-class ColumnsMarked extends PlainModel implements ColumnsTranslatable
-{
-}
+class ColumnsMarked extends PlainModel implements ColumnsTranslatable {}
 
-class InheritsJson extends JsonMarked
-{
-}
+class InheritsJson extends JsonMarked {}
 
-class TwoMarkers extends JsonMarked implements ColumnsTranslatable
-{
-}
+class TwoMarkers extends JsonMarked implements ColumnsTranslatable {}
 
 final class ResolutionTest extends TestCase
 {
@@ -131,9 +121,7 @@ final class ResolutionTest extends TestCase
 
     public function test_a_marker_without_the_trait_adds_no_behavior(): void
     {
-        $model = new class extends Model implements JsonTranslatable
-        {
-        };
+        $model = new class extends Model implements JsonTranslatable {};
 
         $this->assertFalse(method_exists($model, 'getTranslation'));
     }
@@ -172,7 +160,7 @@ final class ResolutionTest extends TestCase
              */
             public function translatable(): array
             {
-                return static::$definition;
+                return self::$definition;
             }
         };
         $model::$definition = $definition;
@@ -214,9 +202,7 @@ final class ResolutionTest extends TestCase
             /** @var array<int, string> */
             protected $translatables = ['title'];
 
-            public function setTitleAttribute(string $value): void
-            {
-            }
+            public function setTitleAttribute(string $value): void {}
         };
 
         $this->expectException(InvalidTranslatableDefinitionException::class);

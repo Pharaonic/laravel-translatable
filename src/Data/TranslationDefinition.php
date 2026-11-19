@@ -19,6 +19,5 @@ final class TranslationDefinition
         public ?string $type = null,
         public bool $required = false,
         public ?bool $fallback = null,
-    ) {
-    }
+    ) {}
 }

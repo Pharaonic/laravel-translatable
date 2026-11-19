@@ -31,8 +31,7 @@ final class JsonStrategy implements TranslationStrategy
         private LocaleColumnMapper $columns,
         private CastResolver $casts,
         private JsonQueryCompiler $compiler,
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {
@@ -79,9 +78,7 @@ final class JsonStrategy implements TranslationStrategy
         return $stored;
     }
 
-    public function stage(Model $model, TranslationPatchSet $changes): void
-    {
-    }
+    public function stage(Model $model, TranslationPatchSet $changes): void {}
 
     public function prepare(Model $model, TranslationPatchSet $changes): void
     {
@@ -129,26 +126,18 @@ final class JsonStrategy implements TranslationStrategy
         $model->setRawAttributes(array_replace($model->getAttributes(), $updates));
     }
 
-    public function persist(Model $model, TranslationPatchSet $changes): void
-    {
-    }
+    public function persist(Model $model, TranslationPatchSet $changes): void {}
 
-    public function delete(Model $model): void
-    {
-    }
+    public function delete(Model $model): void {}
 
     public function snapshot(Model $model): mixed
     {
         return null;
     }
 
-    public function restore(Model $model, mixed $snapshot): void
-    {
-    }
+    public function restore(Model $model, mixed $snapshot): void {}
 
-    public function flush(Model $model): void
-    {
-    }
+    public function flush(Model $model): void {}
 
     public function isLoaded(Model $model): bool
     {

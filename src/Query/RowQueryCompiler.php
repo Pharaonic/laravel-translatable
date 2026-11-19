@@ -17,9 +17,7 @@ use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
  */
 abstract class RowQueryCompiler implements TranslationQueryCompiler
 {
-    public function __construct(protected DefinitionResolver $definitions)
-    {
-    }
+    public function __construct(protected DefinitionResolver $definitions) {}
 
     /**
      * The wrapped SQL expression of one field in one locale.
@@ -130,9 +128,7 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
             ->orderByRaw($expression.' '.$direction);
     }
 
-    public function withTranslations(Builder $query, Model $model, ?array $locales): void
-    {
-    }
+    public function withTranslations(Builder $query, Model $model, ?array $locales): void {}
 
     /**
      * The expression compared or ordered for the field's declared type.

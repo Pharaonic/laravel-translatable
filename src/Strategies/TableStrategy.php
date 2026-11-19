@@ -35,8 +35,7 @@ final class TableStrategy implements TranslationStrategy
         private DefinitionResolver $definitions,
         private CastResolver $casts,
         private TableQueryCompiler $compiler,
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {
@@ -278,9 +277,7 @@ final class TableStrategy implements TranslationStrategy
         }
     }
 
-    public function prepare(Model $model, TranslationPatchSet $changes): void
-    {
-    }
+    public function prepare(Model $model, TranslationPatchSet $changes): void {}
 
     public function persist(Model $model, TranslationPatchSet $changes): void
     {
@@ -375,9 +372,7 @@ final class TableStrategy implements TranslationStrategy
         $model->setRelation('translations', new Collection($items));
     }
 
-    public function flush(Model $model): void
-    {
-    }
+    public function flush(Model $model): void {}
 
     public function isLoaded(Model $model): bool
     {

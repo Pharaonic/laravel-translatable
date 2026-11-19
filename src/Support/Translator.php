@@ -43,8 +43,7 @@ final class Translator
         private StrategyResolver $strategies,
         private DefinitionResolver $definitions,
         private CastResolver $casts,
-    ) {
-    }
+    ) {}
 
     public function strategy(Model $model): TranslationStrategy
     {

@@ -24,8 +24,7 @@ final class SchemaGenerator
         private TableStrategy $table,
         private Stubs $stubs,
         private SchemaInspector $schema,
-    ) {
-    }
+    ) {}
 
     public function className(Model $model, string $strategy, string $suffix): string
     {
