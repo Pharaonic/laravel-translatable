@@ -1,0 +1,23 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }}Translation extends Model
+{
+    /**
+     * @var string
+     */
+    protected $table = '{{ translationsTable }}';
+
+    /**
+     * @var array<int, string>
+     */
+    protected $fillable = ['locale', '{{ foreignKey }}', 'title'];
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+}
