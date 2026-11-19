@@ -14,9 +14,7 @@ use Pharaonic\Laravel\Translatable\Exceptions\InvalidTranslatableDefinitionExcep
 use Pharaonic\Laravel\Translatable\Exceptions\InvalidTranslationStrategyException;
 use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
 use Pharaonic\Laravel\Translatable\Resolution\StrategyResolver;
-use Pharaonic\Laravel\Translatable\Tests\TestCase;
 use Pharaonic\Laravel\Translatable\Translatable;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 class PlainModel extends Model
 {
@@ -36,217 +34,176 @@ class InheritsJson extends JsonMarked {}
 
 class TwoMarkers extends JsonMarked implements ColumnsTranslatable {}
 
-final class ResolutionTest extends TestCase
+$matrix = (static function (): array {
+    return [
+        'no marker, missing config' => [PlainModel::class, null, 'table'],
+        'no marker, json' => [PlainModel::class, 'json', 'json'],
+        'no marker, columns' => [PlainModel::class, 'columns', 'columns'],
+        'table marker over json' => [TableMarked::class, 'json', 'table'],
+        'json marker over table' => [JsonMarked::class, 'table', 'json'],
+        'columns marker over json' => [ColumnsMarked::class, 'json', 'columns'],
+        'inherited marker' => [InheritsJson::class, 'columns', 'json'],
+    ];
+})();
+
+$invalid = (static function (): array {
+    return [
+        'shared' => ['shared'],
+        'hybrid' => ['hybrid'],
+        'json-bag' => ['json-bag'],
+        'empty' => [''],
+        'upper case' => ['JSON'],
+        'class name' => [TableMarked::class],
+        'array' => [['table']],
+    ];
+})();
+
+$invalidDefinitions = (static function (): array {
+    return [
+        'storage option' => [['title' => ['storage' => 'json']], 'never chooses its storage'],
+        'strategy option' => [['title' => ['strategy' => 'columns']], 'never chooses its storage'],
+        'unknown option' => [['title' => ['translate' => true]], 'unknown option'],
+        'unknown type' => [['title' => ['type' => 'money']], 'must be one of'],
+        'reserved name' => [['translations'], 'reserved'],
+        'unsafe name' => [['title; drop'], 'not a valid field name'],
+    ];
+})();
+
+function resolutionResolve(Model $model): string
 {
-    private function resolve(Model $model): string
-    {
-        return $this->app->make(StrategyResolver::class)->name($model);
-    }
-
-    /**
-     * @return array<string, array{class-string<Model>, mixed, string}>
-     */
-    public static function matrix(): array
-    {
-        return [
-            'no marker, missing config' => [PlainModel::class, null, 'table'],
-            'no marker, json' => [PlainModel::class, 'json', 'json'],
-            'no marker, columns' => [PlainModel::class, 'columns', 'columns'],
-            'table marker over json' => [TableMarked::class, 'json', 'table'],
-            'json marker over table' => [JsonMarked::class, 'table', 'json'],
-            'columns marker over json' => [ColumnsMarked::class, 'json', 'columns'],
-            'inherited marker' => [InheritsJson::class, 'columns', 'json'],
-        ];
-    }
-
-    /**
-     * @dataProvider matrix
-     *
-     * @param  class-string<Model>  $class
-     */
-    #[DataProvider('matrix')]
-    public function test_marker_then_config_then_table(string $class, mixed $configured, string $expected): void
-    {
-        Config::set('translatable.strategy', $configured);
-
-        $this->assertSame($expected, $this->resolve(new $class));
-    }
-
-    public function test_runtime_config_changes_apply_to_unmarked_models(): void
-    {
-        Config::set('translatable.strategy', 'json');
-        $this->assertSame('json', $this->resolve(new PlainModel));
-
-        Config::set('translatable.strategy', 'table');
-        $this->assertSame('table', $this->resolve(new PlainModel));
-        $this->assertSame('json', $this->resolve(new JsonMarked));
-    }
-
-    /**
-     * @return array<string, array{mixed}>
-     */
-    public static function invalid(): array
-    {
-        return [
-            'shared' => ['shared'],
-            'hybrid' => ['hybrid'],
-            'json-bag' => ['json-bag'],
-            'empty' => [''],
-            'upper case' => ['JSON'],
-            'class name' => [TableMarked::class],
-            'array' => [['table']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalid
-     */
-    #[DataProvider('invalid')]
-    public function test_invalid_strategies_fail_with_the_model_and_choices(mixed $configured): void
-    {
-        Config::set('translatable.strategy', $configured);
-
-        try {
-            $this->resolve(new PlainModel);
-            $this->fail('An invalid strategy must throw.');
-        } catch (InvalidTranslationStrategyException $exception) {
-            $this->assertStringContainsString(PlainModel::class, $exception->getMessage());
-            $this->assertStringContainsString('table, json, columns', $exception->getMessage());
-        }
-    }
-
-    public function test_two_markers_conflict(): void
-    {
-        $this->expectException(ConflictingTranslationStrategiesException::class);
-
-        $this->resolve(new TwoMarkers);
-    }
-
-    public function test_a_marker_without_the_trait_adds_no_behavior(): void
-    {
-        $model = new class extends Model implements JsonTranslatable {};
-
-        $this->assertFalse(method_exists($model, 'getTranslation'));
-    }
-
-    /**
-     * @return array<string, array{array<mixed>, string}>
-     */
-    public static function invalidDefinitions(): array
-    {
-        return [
-            'storage option' => [['title' => ['storage' => 'json']], 'never chooses its storage'],
-            'strategy option' => [['title' => ['strategy' => 'columns']], 'never chooses its storage'],
-            'unknown option' => [['title' => ['translate' => true]], 'unknown option'],
-            'unknown type' => [['title' => ['type' => 'money']], 'must be one of'],
-            'reserved name' => [['translations'], 'reserved'],
-            'unsafe name' => [['title; drop'], 'not a valid field name'],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidDefinitions
-     *
-     * @param  array<mixed>  $definition
-     */
-    #[DataProvider('invalidDefinitions')]
-    public function test_invalid_field_definitions_are_rejected(array $definition, string $message): void
-    {
-        $model = new class extends Model
-        {
-            use Translatable;
-
-            /** @var array<mixed> */
-            public static array $definition = [];
-
-            /**
-             * @return array<mixed>
-             */
-            public function translatable(): array
-            {
-                return self::$definition;
-            }
-        };
-        $model::$definition = $definition;
-
-        $this->expectException(InvalidTranslatableDefinitionException::class);
-        $this->expectExceptionMessage($message);
-
-        (new DefinitionResolver)->for($model);
-    }
-
-    public function test_contradictory_definitions_are_rejected(): void
-    {
-        $model = new class extends Model
-        {
-            use Translatable;
-
-            /** @var array<int, string> */
-            protected $translatables = ['title'];
-
-            /**
-             * @return array<string, array<string, mixed>>
-             */
-            public function translatable(): array
-            {
-                return ['body' => []];
-            }
-        };
-
-        $this->expectException(InvalidTranslatableDefinitionException::class);
-        (new DefinitionResolver)->for($model);
-    }
-
-    public function test_set_mutators_on_translated_fields_are_rejected(): void
-    {
-        $model = new class extends Model
-        {
-            use Translatable;
-
-            /** @var array<int, string> */
-            protected $translatables = ['title'];
-
-            public function setTitleAttribute(string $value): void {}
-        };
-
-        $this->expectException(InvalidTranslatableDefinitionException::class);
-        (new DefinitionResolver)->for($model);
-    }
-
-    public function test_the_method_wins_over_a_matching_legacy_list(): void
-    {
-        $model = new class extends Model
-        {
-            use Translatable;
-
-            /** @var array<int, string> */
-            protected $translatables = ['title'];
-
-            /**
-             * @return array<string, array<string, mixed>>
-             */
-            public function translatable(): array
-            {
-                return ['title' => ['type' => 'string', 'required' => true]];
-            }
-        };
-
-        $registry = (new DefinitionResolver)->for($model);
-
-        $this->assertSame(['title'], $registry->required());
-        $this->assertSame('string', $registry->get('title')?->type);
-    }
-
-    public function test_the_deprecated_translatable_attributes_list_is_still_read(): void
-    {
-        $model = new class extends Model
-        {
-            use Translatable;
-
-            /** @var array<int, string> */
-            protected $translatableAttributes = ['title', 'body'];
-        };
-
-        $this->assertSame(['title', 'body'], (new DefinitionResolver)->for($model)->names());
-    }
+    return app(StrategyResolver::class)->name($model);
 }
+
+test('marker then config then table', function (string $class, mixed $configured, string $expected) {
+    Config::set('translatable.strategy', $configured);
+
+    $this->assertSame($expected, resolutionResolve(new $class));
+})->with($matrix);
+
+test('runtime config changes apply to unmarked models', function () {
+    Config::set('translatable.strategy', 'json');
+    $this->assertSame('json', resolutionResolve(new PlainModel));
+
+    Config::set('translatable.strategy', 'table');
+    $this->assertSame('table', resolutionResolve(new PlainModel));
+    $this->assertSame('json', resolutionResolve(new JsonMarked));
+});
+
+test('invalid strategies fail with the model and choices', function (mixed $configured) {
+    Config::set('translatable.strategy', $configured);
+
+    try {
+        resolutionResolve(new PlainModel);
+        $this->fail('An invalid strategy must throw.');
+    } catch (InvalidTranslationStrategyException $exception) {
+        $this->assertStringContainsString(PlainModel::class, $exception->getMessage());
+        $this->assertStringContainsString('table, json, columns', $exception->getMessage());
+    }
+})->with($invalid);
+
+test('two markers conflict', function () {
+    $this->expectException(ConflictingTranslationStrategiesException::class);
+
+    resolutionResolve(new TwoMarkers);
+});
+
+test('a marker without the trait adds no behavior', function () {
+    $model = new class extends Model implements JsonTranslatable {};
+
+    $this->assertFalse(method_exists($model, 'getTranslation'));
+});
+
+test('invalid field definitions are rejected', function (array $definition, string $message) {
+    $model = new class extends Model
+    {
+        use Translatable;
+
+        /** @var array<mixed> */
+        public static array $definition = [];
+
+        /**
+         * @return array<mixed>
+         */
+        public function translatable(): array
+        {
+            return self::$definition;
+        }
+    };
+    $model::$definition = $definition;
+
+    $this->expectException(InvalidTranslatableDefinitionException::class);
+    $this->expectExceptionMessage($message);
+
+    (new DefinitionResolver)->for($model);
+})->with($invalidDefinitions);
+
+test('contradictory definitions are rejected', function () {
+    $model = new class extends Model
+    {
+        use Translatable;
+
+        /** @var array<int, string> */
+        protected $translatables = ['title'];
+
+        /**
+         * @return array<string, array<string, mixed>>
+         */
+        public function translatable(): array
+        {
+            return ['body' => []];
+        }
+    };
+
+    $this->expectException(InvalidTranslatableDefinitionException::class);
+    (new DefinitionResolver)->for($model);
+});
+
+test('set mutators on translated fields are rejected', function () {
+    $model = new class extends Model
+    {
+        use Translatable;
+
+        /** @var array<int, string> */
+        protected $translatables = ['title'];
+
+        public function setTitleAttribute(string $value): void {}
+    };
+
+    $this->expectException(InvalidTranslatableDefinitionException::class);
+    (new DefinitionResolver)->for($model);
+});
+
+test('the method wins over a matching legacy list', function () {
+    $model = new class extends Model
+    {
+        use Translatable;
+
+        /** @var array<int, string> */
+        protected $translatables = ['title'];
+
+        /**
+         * @return array<string, array<string, mixed>>
+         */
+        public function translatable(): array
+        {
+            return ['title' => ['type' => 'string', 'required' => true]];
+        }
+    };
+
+    $registry = (new DefinitionResolver)->for($model);
+
+    $this->assertSame(['title'], $registry->required());
+    $this->assertSame('string', $registry->get('title')?->type);
+});
+
+test('the deprecated translatable attributes list is still read', function () {
+    $model = new class extends Model
+    {
+        use Translatable;
+
+        /** @var array<int, string> */
+        protected $translatableAttributes = ['title', 'body'];
+    };
+
+    $this->assertSame(['title', 'body'], (new DefinitionResolver)->for($model)->names());
+});

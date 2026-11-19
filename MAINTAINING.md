@@ -8,7 +8,7 @@ Translations for Eloquent models through one API (`Translatable` trait) over thr
 
 ## Supported Laravel lines
 
-One branch per Laravel major, from `6.x` to the newest major, all carrying the same code (first released as `N.0.0` on each line). Each line's PHP range, `illuminate/*` constraint, and tools follow the Pharaonic Laravel line table. `6.x` runs PHPUnit, because Pest cannot install on Laravel 6. The later lines also run PHPUnit until the package's Pest migration, which is its own change. `develop` follows the newest line. 2.x (`main`, tags `1.0.0`–`2.0.0`) is the legacy release line and is not developed further.
+One branch per Laravel major, from `6.x` to the newest major, all carrying the same code (first released as `N.0.0` on each line). Each line's PHP range, `illuminate/*` constraint, and tools follow the Pharaonic Laravel line table. `6.x` runs the tests as PHPUnit classes, because Pest cannot install on Laravel 6; from `7.x` on they are Pest files (`tests/Pest.php` binds `TestCase` to `Feature` and `Unit`). A test fixed on `6.x` is ported to `7.x` as a Pest test. `develop` follows the newest line. 2.x (`main`, tags `1.0.0`–`2.0.0`) is the legacy release line and is not developed further.
 
 The code therefore stays compatible with PHP 8.0 and Laravel 6: no enums, `readonly`, `array_is_list()`, first-class callables or later syntax. Framework APIs newer than Laravel 6 are detected at runtime (`CastsAttributes`, `NullDispatcher`, the 8.19+ transaction manager), raw original attributes come from `Support\RawOriginal` instead of `getRawOriginal()` (Laravel 7+), and no check may always pass on a later line, because PHPStan reports it there, and generic relation and builder PHPDoc only exists from 11.x.
 
