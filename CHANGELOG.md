@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 13.0.1 - Unreleased
+
+### Changed
+
+- The Composer description names the three storage strategies instead of the 2.x wording.
+
 ## 13.0.0 - 2026-11-19
 
 The 10.0.0 release for Laravel 13: the same code, API and changes as 6.0.0 and 10.0.0 below, including the Laravel Boost resources.
