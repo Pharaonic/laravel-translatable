@@ -1,5 +1,5 @@
 ---
-name: Laravel Translatable
+name: Translatable
 
 action:
   label: View on Packagist
