@@ -32,6 +32,9 @@ trait Translatable
 
     private bool $savingTranslations = false;
 
+    /** @var list<string>|null */
+    private ?array $loadedTranslationLocales = null;
+
     public static function bootTranslatable(): void
     {
         static::saving(function (Model $model) {
@@ -551,6 +554,26 @@ trait Translatable
     }
 
     // ---------------------------------------------------------------- internal
+
+    /**
+     * @internal
+     *
+     * @return list<string>|null
+     */
+    public function getLoadedTranslationLocales(): ?array
+    {
+        return $this->loadedTranslationLocales;
+    }
+
+    /**
+     * @internal
+     *
+     * @param  list<string>|null  $locales
+     */
+    public function setLoadedTranslationLocales(?array $locales): void
+    {
+        $this->loadedTranslationLocales = $locales;
+    }
 
     /**
      * @internal
