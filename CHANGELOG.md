@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## 6.0.0 - Unreleased
+## 6.0.0 - 2026-11-19
 
 A redesign with three storage strategies behind one API. The table strategy is the default and keeps the 2.x storage. 2.x applications follow `UPGRADING.md`.
 
