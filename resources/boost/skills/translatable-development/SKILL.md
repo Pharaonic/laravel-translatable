@@ -23,6 +23,8 @@ Use this skill when a model has fields that differ per language: declaring them,
 | `json` | `JsonTranslatable` | one JSON column per field: `{"en": "…", "ar": "…"}` | few fields, open-ended locales, no extra table |
 | `columns` | `ColumnsTranslatable` | `title_en`, `title_ar` columns (locale lowercased, `-` as `_`) | small fixed locale set, plain indexes |
 
+The json strategy needs no `$casts`: the package reads and writes the JSON columns itself, and value types come from `translatable()`.
+
 A model implements at most one marker (`Pharaonic\Laravel\Translatable\Contracts\…`); without one it follows `config('translatable.strategy')`. Different models may use different strategies.
 
 ## Declaring fields
