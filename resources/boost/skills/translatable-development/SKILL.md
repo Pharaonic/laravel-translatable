@@ -23,7 +23,7 @@ Use this skill when a model has fields that differ per language: declaring them,
 | `json` | `JsonTranslatable` | one JSON column per field: `{"en": "…", "ar": "…"}` | few fields, open-ended locales, no extra table |
 | `columns` | `ColumnsTranslatable` | `title_en`, `title_ar` columns (locale lowercased, `-` as `_`) | small fixed locale set, plain indexes |
 
-A json model casts each translated JSON column to `array` (`protected $casts = ['title' => 'array'];`); the package reads and writes those columns raw, so the casts never change what it stores, and value types still come from `translatable()`.
+The json strategy needs no `$casts`: the package reads and writes the JSON columns itself, and value types come from `translatable()`.
 
 A model implements at most one marker (`Pharaonic\Laravel\Translatable\Contracts\…`); without one it follows `config('translatable.strategy')`. Different models may use different strategies.
 
@@ -147,7 +147,7 @@ php artisan translatable:verify 'App\Models\Post' --from=table --to=json
 php artisan translatable:rollback 'App\Models\Post' --migration-id=<id> --apply
 ```
 
-Move a model to another strategy in this order: make-schema, migrate, verify, then deploy the new marker, adding the `array` casts when moving to json or removing them when moving away (both commands print the exact change). The source is never changed.
+Move a model to another strategy in this order: make-schema, migrate, verify, then deploy the new marker. The source is never changed.
 
 ## Pitfalls
 
