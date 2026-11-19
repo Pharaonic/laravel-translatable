@@ -40,6 +40,10 @@ Configuration keys (`translatable.*`), publish tags (`pharaonic`, `laravel-trans
 
 Fixes land on the oldest affected line and are ported to every later line and `develop`.
 
+## AI ready
+
+From `10.x` on, the package ships Laravel Boost resources: `resources/boost/guidelines/core.blade.php` and `resources/boost/skills/translatable-development/SKILL.md`, checked by `tests/Unit/BoostResourcesTest.php`. They are the same on every line from `10.x`, describe only public API, and change with it. The lines below `10.x` have none, because Boost needs Laravel 10.
+
 ## Documentation
 
 https://pharaonic.dev/packages/laravel/translatable
