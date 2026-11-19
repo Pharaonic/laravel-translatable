@@ -3,7 +3,6 @@
 namespace Pharaonic\Laravel\Translatable\Data;
 
 use ArrayAccess;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
 use Pharaonic\Laravel\Translatable\Support\Translator;
@@ -15,7 +14,7 @@ use Pharaonic\Laravel\Translatable\Support\Translator;
  *
  * @implements ArrayAccess<string, mixed>
  */
-final class LocaleTranslation implements Arrayable, ArrayAccess, JsonSerializable
+final class LocaleTranslation implements ArrayAccess, JsonSerializable
 {
     public function __construct(private Translator $translator, private Model $model, private string $locale)
     {
