@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 8.0.1 - Unreleased
+
+### Changed
+
+- The Composer description names the three storage strategies instead of the 2.x wording.
+
 ## 8.0.0 - 2026-11-19
 
 The 6.0.0 redesign for Laravel 8: the same code, API and changes as 6.0.0 below.
