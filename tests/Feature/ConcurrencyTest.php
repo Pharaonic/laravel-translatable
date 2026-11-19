@@ -10,6 +10,7 @@ use Pharaonic\Laravel\Translatable\Tests\Fixtures\ColumnsPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\JsonPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\TablePage;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Real parallel writers: forked processes, each with its own connection, on a
@@ -92,6 +93,7 @@ final class ConcurrencyTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_parallel_writers_of_different_fields_and_locales_lose_nothing(string $class): void
     {
         DB::table('table_page_translations')->delete();
