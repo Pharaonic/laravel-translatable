@@ -90,6 +90,8 @@ Schema::create('posts', function (Blueprint $table) {
 });
 ```
 
+The json strategy needs no `$casts`: the package reads and writes these columns itself, and the value types come from `translatable()`. Casts you add on them anyway do no harm.
+
 A save locks the row, reads the stored JSON again, and writes back only the locales you changed, so two requests that write different locales both keep their values.
 
 ### Columns
