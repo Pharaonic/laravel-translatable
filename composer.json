@@ -1,6 +1,6 @@
 {
   "name": "pharaonic/laravel-translatable",
-  "description": "Simplest Translatable for Laravel Eloquent/Model",
+  "description": "Translated fields for Laravel Eloquent models in three storage strategies behind one API: a translations table, a JSON column per field, or a column per locale.",
   "type": "library",
   "license": "MIT",
   "keywords": [
