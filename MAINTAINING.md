@@ -34,7 +34,7 @@ Configuration keys (`translatable.*`), publish tags (`pharaonic`, `laravel-trans
 - Every field and locale is validated before it reaches SQL; values are always bound. JSON and columns identifiers come only from validated field names and locale tags.
 - The services are singletons that are safe under Octane: pending changes live on the model, config and the locale are read on every call, caches hold only class metadata and schema columns (keyed by connection, database and table), and a request-bound service (fallback policy, `db.transactions`, `pharaonic-seo`) is resolved from `Container::getInstance()` at call time. Never inject the container or a request-bound service into a singleton.
 - The traits are analysed by PHPStan only through `tests/Fixtures`, which use them.
-- The test suite runs on SQLite by default; it is not run in Docker. `TRANSLATABLE_DB=mysql|mariadb|pgsql` with `TRANSLATABLE_DB_HOST`, `_PORT`, `_DATABASE`, `_USERNAME` and `_PASSWORD` runs it on a server, which also enables the parallel-writer tests (they need `pcntl`).
+- The test suite runs on SQLite by default; it is not run in Docker. `TRANSLATABLE_DB=mysql|mariadb|pgsql` with `TRANSLATABLE_DB_HOST`, `_PORT`, `_DATABASE`, `_USERNAME` and `_PASSWORD` runs it on a server, which also enables the parallel-writer tests (they need `pcntl`). CI runs the suite on MySQL 8.4, MariaDB 11 and PostgreSQL 16 in the `databases` job of `build.yml`, a package-specific addition to the template workflow; keep it when syncing the workflow from the template.
 
 ## Branch notes
 
