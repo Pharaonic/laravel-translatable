@@ -94,20 +94,34 @@ final class GeneratorsTest extends TestCase
 
     public function test_make_schema_table_reads_the_type_of_the_model_key(): void
     {
-        $this->assertSame('integer', $this->app->make(SchemaInspector::class)->columnType((new TablePage)->getConnection(), 'table_pages', 'id'));
-        $this->assertNull($this->app->make(SchemaInspector::class)->columnType((new TablePage)->getConnection(), 'table_pages', 'missing'));
+        $connection = (new TablePage)->getConnection();
+        $driver = $connection->getDriverName();
+        $inspector = $this->app->make(SchemaInspector::class);
+
+        // What bigIncrements and uuid() declare on each engine.
+        [$bigKey, $bigColumn, $uuidColumn] = match ($driver) {
+            'sqlite' => ['integer', 'unsignedBigInteger', "string('uuid_parent_id')"],
+            'pgsql' => ['bigint', 'bigInteger', "uuid('uuid_parent_id')"],
+            default => [null, 'unsignedBigInteger', "char('uuid_parent_id', 36)"],
+        };
+
+        $type = $inspector->columnType($connection, 'table_pages', 'id');
+
+        if ($bigKey !== null) {
+            $this->assertSame($bigKey, $type);
+        } else {
+            $this->assertMatchesRegularExpression('/^bigint(\(20\))? unsigned$/', (string) $type, 'MySQL 8 drops the display width; MariaDB keeps it.');
+        }
+
+        $this->assertNull($inspector->columnType($connection, 'table_pages', 'missing'));
 
         Schema::create('uuid_parents', function (Blueprint $table) {
             $table->uuid('id')->primary();
         });
-        $this->assertSame("\$table->string('uuid_parent_id')", SchemaGenerator::keyColumnFor(
-            (string) $this->app->make(SchemaInspector::class)->columnType((new TablePage)->getConnection(), 'uuid_parents', 'id'),
-            'uuid_parent_id',
-            'sqlite',
-        ));
+        $this->assertSame("\$table->{$uuidColumn}", SchemaGenerator::keyColumnFor((string) $inspector->columnType($connection, 'uuid_parents', 'id'), 'uuid_parent_id', $driver));
 
         $this->artisan('translatable:make-schema', ['model' => TablePage::class, '--to' => 'table'])->assertExitCode(0);
-        $this->assertStringContainsString("\$table->unsignedBigInteger('table_page_id');", (string) file_get_contents($this->migrations()[0]));
+        $this->assertStringContainsString("\$table->{$bigColumn}('table_page_id');", (string) file_get_contents($this->migrations()[0]));
     }
 
     public function test_make_schema_table_needs_the_translation_model(): void
