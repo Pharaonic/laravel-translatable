@@ -14,6 +14,7 @@ use Pharaonic\Laravel\Translatable\Events\TranslationsMigrated;
 use Pharaonic\Laravel\Translatable\Migration\Journal;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\Book;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 final class MigrationEngineTest extends TestCase
@@ -90,6 +91,7 @@ final class MigrationEngineTest extends TestCase
     /**
      * @dataProvider directions
      */
+    #[DataProvider('directions')]
     public function test_every_direction_copies_verifies_and_cuts_over(string $from, string $to): void
     {
         $this->seedBooks($from);
