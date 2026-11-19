@@ -2,11 +2,16 @@
 - Laravel Package {color=blue}
 - {release.label} {color=green}
 - {package.license} License {color=purple}
+- AI Ready {color=purple}
 :::
 
 # Laravel Translatable
 
 Laravel Translatable gives your Eloquent models translated fields, stored the way that fits each model. It supports three storage strategies behind one API: a translations table, a JSON column per field, or a column per field and locale. Reads, writes, scopes, events and fallbacks behave the same under all three, so you can start with one and move a model to another with a command.
+
+:::success AI Ready
+Laravel Translatable ships Laravel Boost resources: a guideline loaded in every session and a `translatable-development` skill loaded when your agent works on translations. Run `php artisan boost:install` and Claude Code, Cursor, Codex, Copilot or Gemini CLI write correct code for all three strategies. See [AI Ready](#ai-ready).
+:::
 
 :::features
 ### Translations Table {icon="database"}
@@ -24,8 +29,8 @@ The same reads, writes, scopes and events under every strategy, with the same re
 ### Move Between Strategies {icon="switch"}
 Copy, verify and roll back a model's translations between strategies with journaled, resumable commands.
 
-### Safe Saves {icon="shield-check"}
-The model and its translations are saved in one transaction, and events fire after it commits.
+### AI Ready {icon="bot"}
+Laravel Boost guideline and skill included, so php artisan boost:install teaches your coding agent the package.
 :::
 
 ### The Same Post, Three Ways
@@ -62,10 +67,6 @@ $post->setTranslation('title', 'en', 'Hello')->setTranslation('title', 'ar', 'م
 $post->getTranslation('title', 'ar');            // "مرحبا"
 Post::whereTranslation('title', 'Hello', 'en')->get();
 ```
-
-:::success AI Ready
-The package ships Laravel Boost resources, so your coding agent learns it with `php artisan boost:install`. See [AI Ready](#ai-ready).
-:::
 
 :::info Quick Tip
 Start with the default translations table. It keeps the storage of the 2.x releases, and you can move a model to JSON or columns later with the [strategy migration commands](#changing-strategy), without losing data.
