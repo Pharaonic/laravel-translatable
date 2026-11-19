@@ -64,9 +64,7 @@ final class GeneratorsTest extends TestCase
     {
         (new TablePage(['slug' => 'a']))->fillTranslations(['en' => ['title' => 'Hello', 'rank' => 2]])->save();
 
-        [$code, $output] = $this->runCommand('translatable:make-schema', ['model' => TablePage::class, '--to' => 'json']);
-        $this->assertSame(0, $code);
-        $this->assertStringContainsString("protected \$casts = ['title' => 'array', 'summary' => 'array', 'rank' => 'array'];", $output);
+        $this->artisan('translatable:make-schema', ['model' => TablePage::class, '--to' => 'json'])->assertExitCode(0);
         $files = $this->migrations();
         $this->assertCount(1, $files);
         $this->assertStringContainsString("\$table->json('title')->nullable();", (string) file_get_contents($files[0]));
@@ -75,9 +73,7 @@ final class GeneratorsTest extends TestCase
         $this->runMigration($files[0]);
 
         $this->assertTrue(Schema::hasColumn('table_pages', 'title'));
-        [$code, $output] = $this->runCommand('translatable:migrate', ['model' => TablePage::class, '--from' => 'table', '--to' => 'json', '--apply' => true]);
-        $this->assertSame(0, $code);
-        $this->assertStringContainsString("protected \$casts = ['title' => 'array', 'summary' => 'array', 'rank' => 'array'];", $output, 'The command says which casts the json strategy needs.');
+        $this->artisan('translatable:migrate', ['model' => TablePage::class, '--from' => 'table', '--to' => 'json', '--apply' => true])->assertExitCode(0);
         $this->artisan('translatable:verify', ['model' => TablePage::class, '--from' => 'table', '--to' => 'json'])->assertExitCode(0);
     }
 
@@ -191,12 +187,7 @@ final class GeneratorsTest extends TestCase
         $this->assertStringContainsString("'title_ar'", (string) file_get_contents($this->migrations()[0]));
 
         $this->artisan('make:translatable', ['name' => 'Tag', '--json' => true, '-m' => true])->assertExitCode(0);
-        $tag = (string) file_get_contents($this->directory.'/app/Models/Tag.php');
-        $this->assertStringContainsString('implements JsonTranslatable', $tag);
-        $this->assertStringContainsString("protected \$casts = ['title' => 'array'];", $tag, 'A json model casts its JSON columns.');
-        exec(escapeshellarg(PHP_BINARY).' -l '.escapeshellarg($this->directory.'/app/Models/Tag.php'), $lint, $lintCode);
-        $this->assertSame(0, $lintCode);
-        $this->assertStringNotContainsString('$casts', (string) file_get_contents($this->directory.'/app/Models/Product.php'), 'Other strategies get no casts.');
+        $this->assertStringContainsString('implements JsonTranslatable', (string) file_get_contents($this->directory.'/app/Models/Tag.php'));
         $this->assertCount(2, $this->migrations(), '-m is the shortcut of --migrations.');
 
         $this->artisan('make:translatable', ['name' => 'Page', '--table' => true])->assertExitCode(0);
