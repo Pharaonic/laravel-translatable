@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 13.0.2 - 2026-11-19
+
+### Changed
+
+- The package page on pharaonic.dev is titled "Laravel Translatable" instead of "Laravel Laravel Translatable".
+- The test suite runs on Pest.
+
 ## 13.0.1 - 2026-11-19
 
 ### Changed
