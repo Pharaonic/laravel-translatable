@@ -32,7 +32,7 @@ php artisan translatable:migrate 'App\Post' --from=table --to=json --apply
 | `--resume` / `--migration-id=` | Continue the latest unfinished migration, or a given one. |
 | `--fields=title,content` | Copy only these fields (partial backfill). |
 | `--ignore-columns=` | Extra translation-table columns whose data may stay behind. |
-| `--without-scopes` | Include records hidden by global scopes, such as soft-deleted ones. |
+| `--without-scopes` | Include records hidden by global scopes, such as a tenant scope. Soft-deleted records are always included. |
 | `--json` | Print the report as JSON. |
 
 The source is never changed. Each record whose target differs from the source is written with the source's values, and the target's previous values are journaled in `storage/translatable/migrations`, so an interrupted copy can resume and an applied one can be undone. When the target cannot hold the source (a locale without a column, or translation-table columns that would stay behind), the copy is blocked, nothing is written, and the command exits with `1`.
