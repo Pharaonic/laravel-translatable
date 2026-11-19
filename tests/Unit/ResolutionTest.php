@@ -16,6 +16,7 @@ use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
 use Pharaonic\Laravel\Translatable\Resolution\StrategyResolver;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
 use Pharaonic\Laravel\Translatable\Translatable;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PlainModel extends Model
 {
@@ -73,6 +74,7 @@ final class ResolutionTest extends TestCase
      *
      * @param  class-string<Model>  $class
      */
+    #[DataProvider('matrix')]
     public function test_marker_then_config_then_table(string $class, mixed $configured, string $expected): void
     {
         Config::set('translatable.strategy', $configured);
@@ -109,6 +111,7 @@ final class ResolutionTest extends TestCase
     /**
      * @dataProvider invalid
      */
+    #[DataProvider('invalid')]
     public function test_invalid_strategies_fail_with_the_model_and_choices(mixed $configured): void
     {
         Config::set('translatable.strategy', $configured);
@@ -158,6 +161,7 @@ final class ResolutionTest extends TestCase
      *
      * @param  array<mixed>  $definition
      */
+    #[DataProvider('invalidDefinitions')]
     public function test_invalid_field_definitions_are_rejected(array $definition, string $message): void
     {
         $model = new class extends Model

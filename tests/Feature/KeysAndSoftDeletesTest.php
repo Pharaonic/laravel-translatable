@@ -12,6 +12,7 @@ use Pharaonic\Laravel\Translatable\Tests\Fixtures\UuidColumnsNote;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\UuidJsonNote;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\UuidNote;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class KeysAndSoftDeletesTest extends TestCase
 {
@@ -49,6 +50,7 @@ final class KeysAndSoftDeletesTest extends TestCase
      *
      * @param  class-string<UuidNote>  $class
      */
+    #[DataProvider('strategies')]
     public function test_uuid_keys_read_write_and_query(string $class): void
     {
         $note = $this->note($class, 'Hello', 'مرحبا');
@@ -72,6 +74,7 @@ final class KeysAndSoftDeletesTest extends TestCase
      *
      * @param  class-string<UuidNote>  $class
      */
+    #[DataProvider('strategies')]
     public function test_a_soft_delete_keeps_the_translations_and_hides_the_record_from_the_scopes(string $class): void
     {
         $note = $this->note($class, 'Hello', 'مرحبا');
