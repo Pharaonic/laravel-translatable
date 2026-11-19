@@ -32,7 +32,7 @@ Implementing two markers throws `ConflictingTranslationStrategiesException`.
 
 The 2.x storage. A `Post` model uses a `PostTranslation` model in the same namespace, a `post_translations` table, a `post_id` foreign key and a `locale` column, with a real `HasMany` relation.
 
-```php title="app/Post.php"
+```php title="app/Models/Post.php"
 use Pharaonic\Laravel\Translatable\Contracts\TableTranslatable;
 
 class Post extends Model implements TableTranslatable
@@ -43,7 +43,7 @@ class Post extends Model implements TableTranslatable
 }
 ```
 
-```php title="app/PostTranslation.php"
+```php title="app/Models/PostTranslation.php"
 class PostTranslation extends Model
 {
     protected $table = 'post_translations';
@@ -70,7 +70,7 @@ The unique index on the foreign key and the locale keeps one row per model and l
 
 Each translated field is a JSON column with the field's own name.
 
-```php title="app/Post.php"
+```php title="app/Models/Post.php"
 use Pharaonic\Laravel\Translatable\Contracts\JsonTranslatable;
 
 class Post extends Model implements JsonTranslatable
@@ -96,7 +96,7 @@ A save locks the row, reads the stored JSON again, and writes back only the loca
 
 Each field has one column per locale, named `{field}_{locale}`. The locale is lowercased, with `-` written as `_`: `title_en`, `title_ar`, `title_pt_br`.
 
-```php title="app/Post.php"
+```php title="app/Models/Post.php"
 use Pharaonic\Laravel\Translatable\Contracts\ColumnsTranslatable;
 
 class Post extends Model implements ColumnsTranslatable

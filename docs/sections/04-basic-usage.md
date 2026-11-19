@@ -2,8 +2,8 @@
 
 Add the `Translatable` trait to a model and list its translated fields in `$translatables`.
 
-```php title="app/Post.php"
-namespace App;
+```php title="app/Models/Post.php"
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Pharaonic\Laravel\Translatable\Translatable;

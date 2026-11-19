@@ -6,8 +6,8 @@ A table-strategy post with typed, required fields and a locale from the URL.
 
 - ===Model
 
-  ```php title="app/Post.php"
-  namespace App;
+  ```php title="app/Models/Post.php"
+  namespace App\Models;
 
   use Illuminate\Database\Eloquent\Model;
   use Pharaonic\Laravel\Translatable\Translatable;
@@ -52,7 +52,7 @@ A table-strategy post with typed, required fields and a locale from the URL.
   ```php title="app/Http/Controllers/PostController.php"
   namespace App\Http\Controllers;
 
-  use App\Post;
+  use App\Models\Post;
 
   class PostController extends Controller
   {
@@ -77,9 +77,11 @@ A table-strategy post with typed, required fields and a locale from the URL.
 - ===Routes
 
   ```php title="routes/web.php"
+  use App\Http\Controllers\PostController;
+
   Route::middleware('locale')->prefix('{locale}')->group(function () {
-      Route::get('posts', 'PostController@index');
-      Route::get('posts/{post}', 'PostController@show');
+      Route::get('posts', [PostController::class, 'index']);
+      Route::get('posts/{post}', [PostController::class, 'show']);
   });
   ```
 
@@ -126,7 +128,7 @@ $pending = Post::whereTranslationProgress($locale, '<', 100)->get()
 
 Products with typed translated fields in JSON columns.
 
-```php title="app/Product.php"
+```php title="app/Models/Product.php"
 class Product extends Model implements JsonTranslatable
 {
     use Translatable;
@@ -152,10 +154,10 @@ Product::whereTranslationLike('name', 'Phone%', 'en')->get();
 ### 5. Moving a Model from Table to Columns
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:make-schema 'App\Post' --to=columns --locales=en,ar
+php artisan translatable:make-schema 'App\Models\Post' --to=columns --locales=en,ar
 php artisan migrate
-php artisan translatable:migrate 'App\Post' --from=table --to=columns --apply
-php artisan translatable:verify 'App\Post' --from=table --to=columns
+php artisan translatable:migrate 'App\Models\Post' --from=table --to=columns --apply
+php artisan translatable:verify 'App\Models\Post' --from=table --to=columns
 ```
 
 Then add `implements ColumnsTranslatable` to the model and deploy.
