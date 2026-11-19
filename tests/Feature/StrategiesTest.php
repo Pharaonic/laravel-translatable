@@ -20,6 +20,7 @@ use Pharaonic\Laravel\Translatable\Tests\Fixtures\ColumnsPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\JsonPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\TablePage;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -56,6 +57,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_stores_and_reads_exact_values(string $class): void
     {
         $page = $this->page($class);
@@ -72,6 +74,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_reads_the_current_locale_on_every_access(string $class): void
     {
         $page = $this->page($class);
@@ -86,6 +89,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_exact_reads_never_fall_back_but_displayed_values_do(string $class): void
     {
         $page = $this->page($class);
@@ -108,6 +112,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_the_fallback_can_be_disabled(string $class): void
     {
         Config::set('app.fallback_locale', null);
@@ -121,6 +126,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_present_values_are_not_missing(string $class): void
     {
         $page = $this->page($class);
@@ -138,6 +144,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_a_plain_save_keeps_every_stored_translation(string $class): void
     {
         $page = $this->page($class);
@@ -151,6 +158,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_sets_the_current_locale_through_attributes_and_mass_assignment(string $class): void
     {
         App::setLocale('ar');
@@ -165,6 +173,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_fills_translations_by_locale(string $class): void
     {
         $page = $class::create(['slug' => 'a', 'locale' => [
@@ -178,6 +187,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_the_payload_only_accepts_translated_fields(string $class): void
     {
         $this->expectException(UnknownTranslatableFieldException::class);
@@ -188,6 +198,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_rejects_malformed_locales(string $class): void
     {
         $this->expectException(InvalidLocaleException::class);
@@ -198,6 +209,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_typed_fields_reject_lossy_values(string $class): void
     {
         $this->expectException(InvalidTranslationValueException::class);
@@ -208,6 +220,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_forgets_one_field_and_whole_locales(string $class): void
     {
         $page = $this->page($class);
@@ -227,6 +240,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_a_null_value_removes_the_translation(string $class): void
     {
         $page = $this->page($class);
@@ -238,6 +252,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_completeness_counts_required_fields(string $class): void
     {
         $page = $this->page($class);
@@ -256,6 +271,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_get_translation_or_fail_throws_a_domain_exception(string $class): void
     {
         $page = $this->page($class);
@@ -269,6 +285,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_tracks_dirty_and_changed_translations(string $class): void
     {
         $page = $this->page($class);
@@ -292,6 +309,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_refresh_discards_unsaved_translations(string $class): void
     {
         $page = $this->page($class);
@@ -306,6 +324,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_replicate_copies_values_without_the_original_records(string $class): void
     {
         $page = $this->page($class);
@@ -321,6 +340,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_serializes_displayed_values_without_storage_columns(string $class): void
     {
         $page = $class::query()->withTranslations()->findOrFail($this->page($class)->getKey());
@@ -338,6 +358,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_hidden_translated_fields_stay_hidden(string $class): void
     {
         $page = $class::query()->withTranslations()->findOrFail($this->page($class)->getKey());
@@ -350,6 +371,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_it_dispatches_events_after_saving(string $class): void
     {
         $page = $this->page($class);
@@ -371,6 +393,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_save_quietly_still_stores_translations(string $class): void
     {
         $page = $this->page($class);
@@ -384,6 +407,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_a_failed_save_stores_nothing_and_keeps_the_changes_pending(string $class): void
     {
         $page = $this->page($class);
@@ -414,6 +438,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_a_failed_create_leaves_no_rows(string $class): void
     {
         $page = new $class(['slug' => 'x']);
@@ -437,6 +462,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_deleting_the_model_removes_its_translations(string $class): void
     {
         $page = $this->page($class);
@@ -452,6 +478,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_translate_returns_a_model_for_table_and_a_proxy_otherwise(string $class): void
     {
         $page = $this->page($class);
@@ -479,6 +506,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_translate_or_default_falls_back_to_the_fallback_locale(string $class): void
     {
         Config::set('app.fallback_locale', 'en');
@@ -499,6 +527,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_translate_returns_null_for_a_locale_without_values_and_translate_or_fail_aborts(string $class): void
     {
         $page = new $class(['slug' => 'e']);
@@ -518,6 +547,7 @@ final class StrategiesTest extends TestCase
     /**
      * @dataProvider strategies
      */
+    #[DataProvider('strategies')]
     public function test_translate_or_new_writes_through_on_save(string $class): void
     {
         $page = new $class(['slug' => 'f']);
