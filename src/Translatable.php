@@ -32,6 +32,9 @@ trait Translatable
 
     private bool $savingTranslations = false;
 
+    /** @var list<string>|null */
+    private ?array $loadedTranslationLocales = null;
+
     public static function bootTranslatable(): void
     {
         static::saving(function (Model $model) {
@@ -298,14 +301,24 @@ trait Translatable
     /**
      * Table: the translation models keyed by locale. Json and columns: field => [locale => value].
      *
-     * @return Collection<array-key, mixed>|array<string, mixed>
+     * @return \Illuminate\Database\Eloquent\Collection<string, Model>|array<string, mixed>
      */
     public function getTranslationsAttribute(): Collection|array
     {
         $strategy = self::translatableService()->strategy($this);
 
         if ($strategy instanceof TableStrategy) {
-            return $strategy->records($this)->keyBy(TableStrategy::LOCALE_COLUMN);
+            $records = [];
+
+            foreach ($strategy->records($this) as $record) {
+                $locale = $record->getAttribute(TableStrategy::LOCALE_COLUMN);
+
+                if (is_string($locale)) {
+                    $records[$locale] = $record;
+                }
+            }
+
+            return new \Illuminate\Database\Eloquent\Collection($records);
         }
 
         return $this->getTranslations();
@@ -551,6 +564,26 @@ trait Translatable
     }
 
     // ---------------------------------------------------------------- internal
+
+    /**
+     * @internal
+     *
+     * @return list<string>|null
+     */
+    public function getLoadedTranslationLocales(): ?array
+    {
+        return $this->loadedTranslationLocales;
+    }
+
+    /**
+     * @internal
+     *
+     * @param  list<string>|null  $locales
+     */
+    public function setLoadedTranslationLocales(?array $locales): void
+    {
+        $this->loadedTranslationLocales = $locales;
+    }
 
     /**
      * @internal

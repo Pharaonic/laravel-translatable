@@ -131,7 +131,7 @@ final class TableQueryCompiler implements TranslationQueryCompiler
             if ($translations instanceof TranslationsRelation) {
                 $translations->onlyLocales($locales, self::LOCALE);
             } elseif ($translations instanceof HasMany) {
-                $translations->whereIn($translations->getRelated()->qualifyColumn(self::LOCALE), $locales);
+                $translations->getQuery()->whereIn($translations->getRelated()->qualifyColumn(self::LOCALE), $locales);
             }
         }]);
     }
