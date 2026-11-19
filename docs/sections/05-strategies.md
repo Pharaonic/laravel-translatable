@@ -54,7 +54,7 @@ class PostTranslation extends Model
 
 ```php title="database/migrations/2020_01_01_000001_create_post_translations_table.php"
 Schema::create('post_translations', function (Blueprint $table) {
-    $table->bigIncrements('id');
+    $table->id();
     $table->unsignedBigInteger('post_id');
     $table->string('locale', 35);
     $table->string('title')->nullable();
@@ -83,7 +83,7 @@ class Post extends Model implements JsonTranslatable
 
 ```php title="database/migrations/2020_01_01_000000_create_posts_table.php"
 Schema::create('posts', function (Blueprint $table) {
-    $table->bigIncrements('id');
+    $table->id();
     $table->json('title')->nullable();
     $table->json('content')->nullable();
     $table->timestamps();
@@ -109,7 +109,7 @@ class Post extends Model implements ColumnsTranslatable
 
 ```php title="database/migrations/2020_01_01_000000_create_posts_table.php"
 Schema::create('posts', function (Blueprint $table) {
-    $table->bigIncrements('id');
+    $table->id();
     $table->string('title_en')->nullable();
     $table->string('title_ar')->nullable();
     $table->timestamps();
