@@ -13,6 +13,8 @@ use Pharaonic\Laravel\Translatable\Strategies\TableStrategy;
  * a locale outside a limited load loads the rest instead of reading it as missing.
  *
  * @internal
+ *
+ * @extends HasMany<Model, Model>
  */
 class TranslationsRelation extends HasMany
 {

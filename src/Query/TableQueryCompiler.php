@@ -20,6 +20,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
 {
     private const LOCALE = TableStrategy::LOCALE_COLUMN;
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereAnyPresent(Builder $query, Model $model, array $fields, array $locales, string $boolean = 'and', bool $not = false): void
     {
         $method = ($boolean === 'or' ? 'orWhere' : 'where').($not ? 'DoesntHave' : 'Has');
@@ -37,6 +40,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
         });
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereValue(Builder $query, Model $model, string $field, string $operator, mixed $value, array $locales, string $boolean = 'and'): void
     {
         $method = $boolean === 'or' ? 'orWhereHas' : 'whereHas';
@@ -56,6 +62,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
         });
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereValueIn(Builder $query, Model $model, string $field, array $values, string $locale, string $boolean = 'and', bool $not = false): void
     {
         $method = $boolean === 'or' ? 'orWhereHas' : 'whereHas';
@@ -66,6 +75,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
         });
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereProgress(Builder $query, Model $model, array $required, string $locale, string $operator, float $percentage): void
     {
         if ($required === []) {
@@ -97,6 +109,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
         );
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function orderBy(Builder $query, Model $model, string $field, array $locales, string $direction): void
     {
         $relation = $this->relation($model);
@@ -121,6 +136,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
             ->orderByRaw($expression.' '.$direction, $bindings);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function withTranslations(Builder $query, Model $model, ?array $locales): void
     {
         $query->with(['translations' => function ($translations) use ($locales) {
@@ -136,6 +154,9 @@ final class TableQueryCompiler implements TranslationQueryCompiler
         }]);
     }
 
+    /**
+     * @return HasMany<Model, Model>
+     */
     private function relation(Model $model): HasMany
     {
         $relation = method_exists($model, 'translations') ? $model->translations() : null;

@@ -19,6 +19,9 @@ final class ColumnsQueryCompiler extends RowQueryCompiler
         parent::__construct($definitions);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     protected function expression(Builder $query, Model $model, string $field, string $locale): string
     {
         return $this->wrap($query, $model->qualifyColumn($this->columns->localeColumn($model, $field, $locale)));

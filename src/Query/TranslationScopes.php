@@ -19,6 +19,8 @@ final class TranslationScopes
 
     /**
      * At least one present field in the locale (the current locale when null).
+     *
+     * @param  Builder<Model>  $query
      */
     public function translated(Builder $query, Model $model, ?string $locale): void
     {
@@ -28,6 +30,8 @@ final class TranslationScopes
 
     /**
      * No present field in the locale (the current locale when null).
+     *
+     * @param  Builder<Model>  $query
      */
     public function notTranslated(Builder $query, Model $model, ?string $locale): void
     {
@@ -35,6 +39,9 @@ final class TranslationScopes
         $this->compiler($model)->whereAnyPresent($query, $model, $this->translator->fields($model)->names(), [$this->translator->locale($model, $locale)], 'and', true);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereHas(Builder $query, Model $model, string $locale, ?string $field, bool $not = false): void
     {
         $fields = $field === null ? $this->translator->fields($model)->names() : [$this->field($model, $field)];
@@ -44,6 +51,8 @@ final class TranslationScopes
 
     /**
      * A comparison on the field's value in the locale, or in any locale when it is null.
+     *
+     * @param  Builder<Model>  $query
      */
     public function where(Builder $query, Model $model, string $field, string $operator, mixed $value, ?string $locale, string $boolean = 'and'): void
     {
@@ -59,6 +68,7 @@ final class TranslationScopes
 
     /**
      * @param  iterable<mixed>  $values
+     * @param  Builder<Model>  $query
      */
     public function whereIn(Builder $query, Model $model, string $field, iterable $values, ?string $locale, bool $not = false): void
     {
@@ -71,6 +81,9 @@ final class TranslationScopes
         $this->compiler($model)->whereValueIn($query, $model, $this->field($model, $field), $list, $this->translator->locale($model, $locale), 'and', $not);
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     */
     public function whereProgress(Builder $query, Model $model, string $locale, string $operator, float|int $percentage): void
     {
         $operator = Operators::normalize($operator);
@@ -85,6 +98,8 @@ final class TranslationScopes
     /**
      * Missing values sort last in both directions. With $fallback, a missing
      * value sorts by the fallback locale's value instead.
+     *
+     * @param  Builder<Model>  $query
      */
     public function orderBy(Builder $query, Model $model, string $field, string $direction, ?string $locale, bool $fallback = false): void
     {
@@ -97,6 +112,7 @@ final class TranslationScopes
 
     /**
      * @param  string|list<string>|null  $locales
+     * @param  Builder<Model>  $query
      */
     public function withTranslations(Builder $query, Model $model, string|array|null $locales): void
     {
