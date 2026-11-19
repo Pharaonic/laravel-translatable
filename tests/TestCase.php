@@ -65,4 +65,26 @@ abstract class TestCase extends Orchestra
     {
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
+
+    /**
+     * Runs an Artisan command and returns its exit code and output; the mocked
+     * console output of Testbench cannot be read on Laravel 6.
+     *
+     * @param  array<string, mixed>  $parameters
+     * @return array{0: int, 1: string}
+     */
+    protected function runCommand(string $command, array $parameters = []): array
+    {
+        $this->mockConsoleOutput = false;
+        $this->app->offsetUnset(\Illuminate\Console\OutputStyle::class);
+        $buffer = new \Symfony\Component\Console\Output\BufferedOutput;
+
+        try {
+            $code = \Illuminate\Support\Facades\Artisan::call($command, $parameters, $buffer);
+
+            return [$code, $buffer->fetch()];
+        } finally {
+            $this->mockConsoleOutput = true;
+        }
+    }
 }

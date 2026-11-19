@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use Pharaonic\Laravel\Translatable\Data\MigrationReport;
 use Pharaonic\Laravel\Translatable\Migration\Journal;
+use Pharaonic\Laravel\Translatable\Resolution\DefinitionResolver;
 use Pharaonic\Laravel\Translatable\Resolution\StrategyResolver;
 
 /**
@@ -53,6 +54,26 @@ trait InteractsWithTranslatableModels
         }
 
         return array_values(array_filter(array_map('trim', explode(',', $value)), fn (string $item): bool => $item !== ''));
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function translatedFields(Model $model): array
+    {
+        $definitions = $this->laravel->make(DefinitionResolver::class);
+
+        return $definitions instanceof DefinitionResolver ? $definitions->for($model)->names() : [];
+    }
+
+    /**
+     * The layout the model uses now: its marker, else the configured strategy.
+     */
+    protected function currentLayout(Model $model): string
+    {
+        $strategies = $this->laravel->make(StrategyResolver::class);
+
+        return $strategies instanceof StrategyResolver ? $strategies->name($model) : 'table';
     }
 
     protected function journal(): Journal
