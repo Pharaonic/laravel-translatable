@@ -20,6 +20,7 @@ use Pharaonic\Laravel\Translatable\Tests\Fixtures\ColumnsPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\JsonPage;
 use Pharaonic\Laravel\Translatable\Tests\Fixtures\TablePage;
 use Pharaonic\Laravel\Translatable\Tests\TestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * The same behavior under the table, json and columns strategies.
@@ -473,5 +474,64 @@ final class StrategiesTest extends TestCase
         $page->save();
 
         $this->assertSame('أهلا', $class::query()->findOrFail($page->getKey())->getTranslation('title', 'ar'));
+    }
+
+    /**
+     * @dataProvider strategies
+     */
+    public function test_translate_or_default_falls_back_to_the_fallback_locale(string $class): void
+    {
+        Config::set('app.fallback_locale', 'en');
+        $page = new $class(['slug' => 'd']);
+        $page->setTranslation('title', 'en', 'Hello')->setTranslation('title', 'ar', 'مرحبا')->save();
+        $page = $class::query()->findOrFail($page->getKey());
+
+        $this->assertSame('مرحبا', $page->translateOrDefault('ar')?->title, 'The locale itself when it has a translation.');
+        $this->assertSame('Hello', $page->translateOrDefault('fr')?->title, 'Else the fallback locale.');
+
+        App::setLocale('ar');
+        $this->assertSame('مرحبا', $page->translateOrDefault()?->title, 'Without a locale, the current locale.');
+
+        Config::set('app.fallback_locale', 'de');
+        $this->assertNull($page->translateOrDefault('fr'), 'Null when neither has a translation.');
+    }
+
+    /**
+     * @dataProvider strategies
+     */
+    public function test_translate_returns_null_for_a_locale_without_values_and_translate_or_fail_aborts(string $class): void
+    {
+        $page = new $class(['slug' => 'e']);
+        $page->setTranslation('title', 'en', 'Hello')->save();
+        $page = $class::query()->findOrFail($page->getKey());
+
+        $this->assertNull($page->translate('ar'));
+        $this->assertSame('Hello', $page->translateOrFail('en')->title);
+
+        App::setLocale('en');
+        $this->assertSame('Hello', $page->translate()?->title, 'Without a locale, the current locale.');
+
+        $this->expectException(NotFoundHttpException::class);
+        $page->translateOrFail('ar');
+    }
+
+    /**
+     * @dataProvider strategies
+     */
+    public function test_translate_or_new_writes_through_on_save(string $class): void
+    {
+        $page = new $class(['slug' => 'f']);
+        $page->translateOrNew('en')->title = 'Hello';
+        $page->save();
+
+        $translation = $page->translateOrNew('ar');
+        $this->assertNull($translation->title, 'A new translation starts empty.');
+        $translation->title = 'مرحبا';
+        $translation->summary = 'ملخص';
+        $page->save();
+
+        $fresh = $class::query()->findOrFail($page->getKey());
+        $this->assertSame(['ar' => 'مرحبا', 'en' => 'Hello'], $fresh->getTranslations('title'));
+        $this->assertSame('ملخص', $fresh->translate('ar')?->summary);
     }
 }
