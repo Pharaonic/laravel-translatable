@@ -446,10 +446,10 @@ final class TableStrategy implements TranslationStrategy
                 throw $exception;
             }
 
-            $existing = $this->relation($model)->getQuery()
-                ->where(self::LOCALE_COLUMN, $record->getAttribute(self::LOCALE_COLUMN))
-                ->lockForUpdate()
-                ->first();
+            $query = $this->relation($model)->getQuery();
+            $query->where(self::LOCALE_COLUMN, $record->getAttribute(self::LOCALE_COLUMN));
+            $query->lockForUpdate();
+            $existing = $query->first();
 
             if (! $existing instanceof Model) {
                 throw $exception;
