@@ -10,8 +10,8 @@ badges:
   - label: "{package.downloadsShort}+ downloads"
     color: blue
 eyebrow: "{package.name}"
-title: Every model, in
-highlight: every language
+title: One API,
+highlight: three ways to store translations
 buttons:
   - label: View Full Documentation
     href: "{card.docsUrl}"
@@ -27,4 +27,4 @@ labels:
   copied: Copied!
 ---
 
-Laravel Translatable adds translated fields to your Eloquent models. Store them in a translations table, in JSON columns or in a column per locale, read `$post->title` in the current locale with a fallback, query and sort by translated values, and move a model from one storage to another without losing a single translation.
+Laravel Translatable lets each Eloquent model choose where its translations live: a **translations table**, a **JSON column per field**, or a **column per field and locale**. You write `$post->title`, `setTranslation()` and `whereTranslation()` the same way for all three, and move a model from one storage to another later without losing a translation.

@@ -80,13 +80,17 @@ Setting a value equal to the stored one is not a change. `refresh()` discards un
 ```php
 $translation = $post->translate('ar');
 $translation->title;                  // "مرحبا"
+$post->translate();                   // the current locale's
+$post->translate('de');               // null: no German value
 
 $post->translateOrNew('fr')->title = 'Bonjour';
-$post->save();
+$post->save();                        // stores the French title
 
-$post->translateOrDefault('fr');      // the French translation, else the fallback locale's
+$post->translateOrDefault('fr');      // the French translation, else the fallback locale's, else null
 $post->translateOrFail('de');         // throws NotFoundHttpException (a 404) when missing
 ```
+
+A locale counts as translated when at least one field has a value in it. Values set through a translation (`$translation->title = …`) are stored by the model's `save()`, in the same transaction, under every strategy.
 
 ### Serialization
 

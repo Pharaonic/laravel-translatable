@@ -1,6 +1,20 @@
 ## Strategies
 
-A strategy decides where a model's translations are stored. Each model uses exactly one:
+Laravel Translatable supports three ways to store translations. Every model picks one, and the rest of the package (reads, writes, scopes, events, fallbacks, generators) works the same for all three.
+
+### Choosing a Strategy
+
+| If your model… | Use |
+| --- | --- |
+| has many locales, long text, or comes from 2.x | `table` |
+| has a few translated fields and an open-ended list of locales, and you want no extra table | `json` |
+| has a small fixed set of locales, and you filter or sort by translated values with plain indexes | `columns` |
+
+Mix them freely: a `Post` can use a translations table while a `Tag` uses JSON and a `Country` uses columns, in the same application.
+
+### How a Model Picks One
+
+Each model uses exactly one strategy:
 
 1. its marker interface, when it implements one;
 2. otherwise `config('translatable.strategy')`;

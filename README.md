@@ -11,7 +11,7 @@
   <a href="https://packagist.org/packages/pharaonic/laravel-translatable" target="_blank"><img src="https://poser.pugx.org/pharaonic/laravel-translatable/downloads" alt="Packagist Downloads"></a>
 </p>
 
-<h3 align="center">Translations for Eloquent models: one API over a translations table, JSON columns or per-locale columns.</h3>
+<h3 align="center">Translated Eloquent fields in three storage strategies, a translations table, a JSON column per field or a column per locale, behind one API.</h3>
 <br>
 
 ## Installation

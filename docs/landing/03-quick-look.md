@@ -1,20 +1,16 @@
 ---
 view: components.packages.quick-look
 title: A quick look
-subtitle: Declare the translated fields, write each locale, and read or query them.
-file: app/Http/Controllers/PostController.php
+subtitle: Choose a strategy with one marker interface; the code that uses the model never changes.
+file: app/Post.php
 language: php
 code: |
-  $post = new Post(['published' => true]);
-  $post->setTranslation('title', 'en', 'Hello')
-      ->setTranslation('title', 'ar', 'مرحبا')
-      ->save();
+  class Post extends Model { use Translatable; }                                    // translations table
+  class Tag extends Model implements JsonTranslatable { use Translatable; }         // a JSON column per field
+  class Country extends Model implements ColumnsTranslatable { use Translatable; }  // name_en, name_ar columns
 
-  App::setLocale('ar');
-  $post->title;                          // "مرحبا"
-  $post->getTranslation('title', 'fr');  // null, nothing stored in French
-
-  Post::whereTranslation('title', 'Hello', 'en')
-      ->orderByTranslation('title')
-      ->get();
+  // The same code under all three:
+  $post->setTranslation('title', 'ar', 'مرحبا')->save();
+  $tag->name;                                         // the current locale, with fallback
+  Country::whereTranslation('name', 'مصر', 'ar')->first();
 ---

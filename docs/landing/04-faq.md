@@ -18,9 +18,13 @@ Run `composer require {package.composer}` in your project's root directory.
 
 The latest release requires {package.requiresText}.
 
+## Which storage strategies does {package.name} support?
+
+Three: a translations table (one row per model and locale, the default), a JSON column per field, and a column per field and locale (`title_en`, `title_ar`). Each model chooses one with a marker interface, or follows `config('translatable.strategy')`.
+
 ## Which storage strategy should I use?
 
-The table strategy is the default and suits many locales and long text. JSON keeps everything on the model's row, and columns suits a small fixed set of locales with plain indexes. Every strategy has the same API, so you can change your mind later.
+The translations table suits many locales and long text. JSON keeps everything on the model's row with any number of locales. Columns suit a small fixed set of locales that you filter or sort with plain indexes. Every strategy has the same API, so you can change your mind later.
 
 ## Can I move a model to another strategy later?
 

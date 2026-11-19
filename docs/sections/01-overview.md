@@ -6,28 +6,63 @@
 
 # Laravel Translatable
 
-Laravel Translatable gives your Eloquent models translated fields with one API and three storage strategies. Store the translations in a translations table, in one JSON column per field, or in one column per field and locale, and keep the same reads, writes, scopes and events for all three. Saves are transactional, concurrent writers of other locales are kept, and Artisan commands copy your data from one strategy to another without touching the source.
+Laravel Translatable gives your Eloquent models translated fields, stored the way that fits each model. It supports three storage strategies behind one API: a translations table, a JSON column per field, or a column per field and locale. Reads, writes, scopes, events and fallbacks behave the same under all three, so you can start with one and move a model to another with a command.
 
 :::features
-### Three Strategies {icon="database"}
-A translations table, a JSON column per field, or a column per field and locale, chosen per model.
+### Translations Table {icon="database"}
+One row per model and locale in a translations table, with a real HasMany relation. The default, and the 2.x storage.
+
+### JSON Column per Field {icon="code-brackets"}
+Each translated field is one JSON column holding every locale on the model's own row.
+
+### Column per Locale {icon="grid"}
+Each field has a column per locale, such as title_en and title_ar, discovered from your table.
 
 ### One API {icon="code"}
-The same reads, writes, scopes and events on every strategy, with the same results on every database.
+The same reads, writes, scopes and events under every strategy, with the same results on every database.
 
-### Typed Fields {icon="badge-check"}
-Declare a field as string, int, float, bool, array, object, date or datetime, and mark it required.
-
-### Fallback Locale {icon="translate"}
-Displayed values fall back to the Laravel fallback locale, while exact reads never do.
+### Move Between Strategies {icon="switch"}
+Copy, verify and roll back a model's translations between strategies with journaled, resumable commands.
 
 ### Safe Saves {icon="shield-check"}
 The model and its translations are saved in one transaction, and events fire after it commits.
-
-### Strategy Migrations {icon="switch"}
-Inspect, copy, verify and roll back translations between strategies with journaled, resumable commands.
 :::
 
+### The Same Post, Three Ways
+
+The same two translations, as each strategy stores them:
+
+- ===Translations Table
+
+  ```text title="post_translations"
+  id | post_id | locale | title
+  1  | 1       | en     | Hello
+  2  | 1       | ar     | مرحبا
+  ```
+
+- ===JSON Column
+
+  ```text title="posts"
+  id | title
+  1  | {"en": "Hello", "ar": "مرحبا"}
+  ```
+
+- ===Column per Locale
+
+  ```text title="posts"
+  id | title_en | title_ar
+  1  | Hello    | مرحبا
+  ```
+
+And the code is the same for all three:
+
+```php
+$post->setTranslation('title', 'en', 'Hello')->setTranslation('title', 'ar', 'مرحبا')->save();
+
+$post->getTranslation('title', 'ar');            // "مرحبا"
+Post::whereTranslation('title', 'Hello', 'en')->get();
+```
+
 :::info Quick Tip
-Start with the default table strategy. It keeps the storage of the 2.x releases, and you can move a model to JSON or columns later with the migration commands, without losing data.
+Start with the default translations table. It keeps the storage of the 2.x releases, and you can move a model to JSON or columns later with the [strategy migration commands](#changing-strategy), without losing data.
 :::

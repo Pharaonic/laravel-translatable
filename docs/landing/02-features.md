@@ -1,26 +1,26 @@
 ---
 view: components.packages.features
 variant: compact
-badge: Key Features
-title: Everything you need for multilingual models
-subtitle: Add one trait, list your fields, and every strategy works the same way.
+badge: Three Strategies, One API
+title: Pick the storage that fits each model
+subtitle: Every strategy has the same reads, writes, scopes and events, so changing your mind costs a command, not a rewrite.
 items:
   - icon: database
-    title: Three Strategies
-    text: A translations table, a JSON column per field, or `title_en` and `title_ar` columns, chosen per model.
-  - icon: translate
-    title: Laravel Locales
-    text: "`$post->title` follows `App::getLocale()` and falls back to `app.fallback_locale`."
-  - icon: search
-    title: Translated Scopes
-    text: "`whereTranslation()`, `orderByTranslation()` and more, with the same results on SQLite, MySQL, MariaDB and PostgreSQL."
-  - icon: badge-check
-    title: Typed and Required Fields
-    text: Typed values, plus `missingTranslations()` and `translationProgress()` for completeness.
+    title: Translations Table
+    text: "One row per model and locale in `post_translations`, with a real `HasMany` relation. The default, and the 2.x storage."
+  - icon: code-brackets
+    title: JSON Column per Field
+    text: "`title` holds `{\"en\": \"Hello\", \"ar\": \"مرحبا\"}` on the model's own row. No extra table, any number of locales."
+  - icon: grid
+    title: Column per Locale
+    text: "`title_en` and `title_ar` columns, read from your table. Plain columns, plain indexes, a fixed set of locales."
+  - icon: code
+    title: The Same API Everywhere
+    text: "`$post->title`, `whereTranslation()` and `orderByTranslation()` return the same results under all three, on SQLite, MySQL, MariaDB and PostgreSQL."
+  - icon: switch
+    title: Move Between Them
+    text: "`translatable:migrate` copies a model's translations to another strategy, `translatable:verify` checks them, `translatable:rollback` undoes it."
   - icon: shield-check
     title: Safe Saves
     text: One transaction per save, concurrent writers of other locales kept, events after commit.
-  - icon: switch
-    title: Strategy Migrations
-    text: "`translatable:migrate` copies, verifies and rolls back translations between strategies."
 ---

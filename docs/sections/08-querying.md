@@ -21,6 +21,7 @@ Post::whereTranslationNotIn('status', ['archived'], 'en')->get();
 
 ```php
 Post::translated('ar')->get();                         // at least one field has an Arabic value
+Post::translated()->get();                             // the same, in the current locale
 Post::notTranslated('ar')->get();
 Post::whereHasTranslation('ar', 'content')->get();     // content has an Arabic value
 Post::whereMissingTranslation('ar', 'content')->get();
@@ -45,6 +46,8 @@ Under the table strategy, `withTranslations()` eager loads the `translations` re
 Post::withTranslations()->get();
 Post::withTranslations(['en', 'ar'])->get();
 ```
+
+Reading a loaded locale needs no query. A locale outside the list is never read as missing: the first read of one loads the model's other translations once. Include the fallback locale in the list when your pages show fallback values.
 
 :::tip Indexes
 Under the columns strategy, index the `{field}_{locale}` columns you filter or sort by. Under the table strategy, the unique index on the foreign key and `locale` already serves the translation queries.
