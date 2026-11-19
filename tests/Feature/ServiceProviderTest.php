@@ -6,42 +6,26 @@ namespace Pharaonic\Laravel\Translatable\Tests\Feature;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
-use Pharaonic\Laravel\Translatable\Tests\TestCase;
 use Pharaonic\Laravel\Translatable\TranslatableServiceProvider;
-use PHPUnit\Framework\Attributes\DataProvider;
 
-final class ServiceProviderTest extends TestCase
-{
-    public function test_it_registers_the_service_provider(): void
-    {
-        $this->assertNotEmpty($this->app->getProviders(TranslatableServiceProvider::class));
-    }
+$publishTags = (static function (): array {
+    return [
+        'pharaonic' => ['pharaonic'],
+        'laravel-translatable' => ['laravel-translatable'],
+    ];
+})();
 
-    public function test_it_registers_the_make_translatable_command_in_the_console(): void
-    {
-        $this->assertArrayHasKey('make:translatable', Artisan::all());
-    }
+it('registers the service provider', function () {
+    $this->assertNotEmpty($this->app->getProviders(TranslatableServiceProvider::class));
+});
 
-    /**
-     * @dataProvider publishTags
-     */
-    #[DataProvider('publishTags')]
-    public function test_it_publishes_the_configuration_under_the_package_tags(string $tag): void
-    {
-        $paths = ServiceProvider::pathsToPublish(TranslatableServiceProvider::class, $tag);
+it('registers the make translatable command in the console', function () {
+    $this->assertArrayHasKey('make:translatable', Artisan::all());
+});
 
-        $this->assertCount(1, $paths);
-        $this->assertSame($this->app->configPath('translatable.php'), array_values($paths)[0]);
-    }
+it('publishes the configuration under the package tags', function (string $tag) {
+    $paths = ServiceProvider::pathsToPublish(TranslatableServiceProvider::class, $tag);
 
-    /**
-     * @return array<string, array{string}>
-     */
-    public static function publishTags(): array
-    {
-        return [
-            'pharaonic' => ['pharaonic'],
-            'laravel-translatable' => ['laravel-translatable'],
-        ];
-    }
-}
+    $this->assertCount(1, $paths);
+    $this->assertSame($this->app->configPath('translatable.php'), array_values($paths)[0]);
+})->with($publishTags);
