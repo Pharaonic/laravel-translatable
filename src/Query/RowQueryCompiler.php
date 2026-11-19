@@ -44,8 +44,10 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         $query->where(function (Builder $group) use ($model, $fields, $locales, $not) {
             foreach ($fields as $field) {
                 foreach ($locales as $locale) {
-                    $expression = $this->expression($group, $model, $field, $locale);
-                    $not ? $group->whereRaw($expression.' is null') : $group->orWhereRaw($expression.' is not null');
+                    // A column or JSON path the grammar wrapped from a validated field and locale.
+                    /** @var literal-string&non-falsy-string $sql */
+                    $sql = $this->expression($group, $model, $field, $locale).($not ? ' is null' : ' is not null');
+                    $not ? $group->whereRaw($sql) : $group->orWhereRaw($sql);
                 }
             }
         }, null, null, $boolean);
@@ -67,12 +69,18 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
                 $expression = $this->typed($group, $model, $field, $this->expression($group, $model, $field, $locale));
 
                 if ($value === null) {
-                    $group->orWhereRaw($expression.($operator === '!=' ? ' is not null' : ' is null'));
+                    // The wrapped expression and a fixed null test.
+                    /** @var literal-string&non-falsy-string $sql */
+                    $sql = $expression.($operator === '!=' ? ' is not null' : ' is null');
+                    $group->orWhereRaw($sql);
 
                     continue;
                 }
 
-                $group->orWhereRaw($expression.' '.$operator.' ?', [$this->binding($group, $model, $field, $value)]);
+                // The wrapped expression and an allowlisted operator; the value is a binding.
+                /** @var literal-string&non-falsy-string $sql */
+                $sql = $expression.' '.$operator.' ?';
+                $group->orWhereRaw($sql, [$this->binding($group, $model, $field, $value)]);
             }
         }, null, null, $boolean);
     }
@@ -110,7 +118,10 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         $placeholders = implode(', ', array_fill(0, count($values), '?'));
         $bindings = array_map(fn (mixed $value): mixed => $this->binding($query, $model, $field, $value), $values);
 
-        $query->whereRaw($expression.($not ? ' not in (' : ' in (').$placeholders.')', $bindings, $boolean);
+        // The wrapped expression and one placeholder per value; the values are bindings.
+        /** @var literal-string&non-falsy-string $sql */
+        $sql = $expression.($not ? ' not in (' : ' in (').$placeholders.')';
+        $query->whereRaw($sql, $bindings, $boolean);
     }
 
     /**
@@ -129,7 +140,10 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
             $required
         );
 
-        $query->whereRaw('('.implode(' + ', $cases).') * 100.0 / '.count($required).' '.$operator.' '.self::number($percentage));
+        // Wrapped expressions, an allowlisted operator and a validated number literal.
+        /** @var literal-string&non-falsy-string $sql */
+        $sql = '('.implode(' + ', $cases).') * 100.0 / '.count($required).' '.$operator.' '.self::number($percentage);
+        $query->whereRaw($sql);
     }
 
     /**
@@ -143,8 +157,12 @@ abstract class RowQueryCompiler implements TranslationQueryCompiler
         );
         $expression = count($expressions) === 1 ? $expressions[0] : 'coalesce('.implode(', ', $expressions).')';
 
-        $query->orderByRaw('case when '.$expression.' is null then 1 else 0 end')
-            ->orderByRaw($expression.' '.$direction);
+        // Wrapped expressions and an allowlisted direction.
+        /** @var literal-string&non-falsy-string $missingLast */
+        $missingLast = 'case when '.$expression.' is null then 1 else 0 end';
+        /** @var literal-string&non-falsy-string $sql */
+        $sql = $expression.' '.$direction;
+        $query->orderByRaw($missingLast)->orderByRaw($sql);
     }
 
     /**

@@ -97,16 +97,19 @@ final class TableQueryCompiler implements TranslationQueryCompiler
             $required
         );
 
+        // Columns the grammar wrapped from validated field names.
+        /** @var literal-string&non-falsy-string $sum */
+        $sum = implode(' + ', $cases);
         $present = $related->newQuery()->toBase();
-        $present->selectRaw(implode(' + ', $cases))
+        $present->selectRaw($sum)
             ->whereColumn($relation->getQualifiedForeignKeyName(), '=', $model->getQualifiedKeyName())
             ->where($related->qualifyColumn(self::LOCALE), '=', $locale)
             ->limit(1);
 
-        $query->whereRaw(
-            'coalesce(('.$present->toSql().'), 0) * 100.0 / '.count($required).' '.$operator.' '.RowQueryCompiler::number($percentage),
-            $present->getBindings()
-        );
+        // A subquery the builder compiled, an allowlisted operator and a validated number literal.
+        /** @var literal-string&non-falsy-string $sql */
+        $sql = 'coalesce(('.$present->toSql().'), 0) * 100.0 / '.count($required).' '.$operator.' '.RowQueryCompiler::number($percentage);
+        $query->whereRaw($sql, $present->getBindings());
     }
 
     /**
@@ -132,8 +135,12 @@ final class TableQueryCompiler implements TranslationQueryCompiler
 
         $expression = count($sql) === 1 ? $sql[0] : 'coalesce('.implode(', ', $sql).')';
 
-        $query->orderByRaw('case when '.$expression.' is null then 1 else 0 end', $bindings)
-            ->orderByRaw($expression.' '.$direction, $bindings);
+        // Subqueries the builder compiled and an allowlisted direction; values are bindings.
+        /** @var literal-string&non-falsy-string $missingLast */
+        $missingLast = 'case when '.$expression.' is null then 1 else 0 end';
+        /** @var literal-string&non-falsy-string $ordered */
+        $ordered = $expression.' '.$direction;
+        $query->orderByRaw($missingLast, $bindings)->orderByRaw($ordered, $bindings);
     }
 
     /**
