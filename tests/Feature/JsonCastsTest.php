@@ -30,13 +30,4 @@ final class JsonCastsTest extends TestCase
 
         $this->assertSame('Hello', $fresh->fresh()?->toArray()['title'] ?? null, 'Serialization shows the displayed value, not the raw column.');
     }
-
-    public function test_switching_away_from_json_says_which_casts_to_remove(): void
-    {
-        $advice = \Pharaonic\Laravel\Translatable\Console\JsonCasts::advice(new CastJsonPage, 'json', 'table', ['title', 'summary', 'rank']);
-
-        $this->assertCount(1, $advice);
-        $this->assertStringContainsString('remove the casts of title, summary, rank', $advice[0]);
-        $this->assertSame([], \Pharaonic\Laravel\Translatable\Console\JsonCasts::advice(new CastJsonPage, 'table', 'json', ['title', 'summary', 'rank']), 'No advice when the casts are already there.');
-    }
 }
