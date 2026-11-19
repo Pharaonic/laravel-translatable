@@ -5,11 +5,12 @@ namespace Pharaonic\Laravel\Translatable\Strategies\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Pharaonic\Laravel\Translatable\Strategies\TableStrategy;
 
 /**
- * The translations relation of the table strategy. When it is eager loaded for
- * some locales only, each model remembers which ones, so a read of another
- * locale loads the rest instead of reading it as missing.
+ * The translations relation of the table strategy. Eager loading it records
+ * on each model which locales it loaded (all of them, or some), so a read of
+ * a locale outside a limited load loads the rest instead of reading it as missing.
  *
  * @internal
  */
@@ -41,17 +42,10 @@ class TranslationsRelation extends HasMany
         $matched = [];
 
         foreach (parent::match($models, $results, $relation) as $key => $model) {
-            if (! $model instanceof Model) {
-                continue;
+            if ($model instanceof Model) {
+                TableStrategy::markLoadedLocales($model, $this->locales);
+                $matched[$key] = $model;
             }
-
-            if ($this->locales !== null) {
-                $loaded = $model->getRelation($relation);
-                $records = $loaded instanceof Collection ? array_filter($loaded->all(), fn ($record): bool => $record instanceof Model) : [];
-                $model->setRelation($relation, new PartialTranslations($records, $this->locales));
-            }
-
-            $matched[$key] = $model;
         }
 
         return $matched;
