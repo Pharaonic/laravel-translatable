@@ -49,8 +49,9 @@ final class JsonQueryCompiler extends RowQueryCompiler
 
         $sql = match ($this->driver($query)) {
             'sqlite' => 'exists (select 1 from json_each('.$column.') where json_each.value '.$operator.' ?)',
-            'mysql', 'mariadb' => 'exists (select 1 from json_table('.$column.", '\$.*' columns (translatable_value longtext path '\$')) as translatable_values where "
-                .($numeric ? '(translatable_value + 0)' : 'translatable_value').' '.$operator.' ?)',
+            // MySQL 8 returns no rows for EXISTS over a JSON_TABLE of an outer column; a count does not have that bug.
+            'mysql', 'mariadb' => '(select count(*) from json_table('.$column.", '\$.*' columns (translatable_value longtext path '\$')) as translatable_values where "
+                .($numeric ? '(translatable_value + 0)' : 'translatable_value').' '.$operator.' ?) > 0',
             'pgsql' => 'exists (select 1 from json_each_text(('.$column.')::json) as translatable_values(locale, value) where '
                 .($numeric ? '(translatable_values.value)::numeric' : 'translatable_values.value').' '.$operator.' ?)',
             default => throw new UnsupportedTranslationQueryException('A JSON condition on any locale is not supported on the '.$this->driver($query).' driver; pass a locale.'),
