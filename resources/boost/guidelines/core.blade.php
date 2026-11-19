@@ -9,6 +9,7 @@ Translated fields for Eloquent models, stored in one of three strategies behind 
 - Locales are Laravel's: `app.locale` is the current locale, `app.fallback_locale` the fallback. There is no locale list in the package config.
 - Translated values are not model attributes: use `getDirtyTranslations()` / `isTranslationDirty()`, not `getDirty()`. Never add a set mutator for a translated field.
 - `$fillable` is never changed for you: add the translated fields, or the `locale` payload key, yourself.
+- A json model casts its translated JSON columns to `array` (`make:translatable --json` writes it).
 
 ### Main features
 
