@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## 8.0.0 - Unreleased
+
+The 6.0.0 redesign for Laravel 8: the same code, API and changes as 6.0.0 below.
+
+### Compatibility
+
+- Laravel 8.75+ on PHP 8.0 and 8.1. The package requires the `illuminate/*` components it uses instead of `laravel/framework`.
+
 ## 7.0.0 - Unreleased
 
 The 6.0.0 redesign for Laravel 7: the same code, API and changes as 6.0.0 below.

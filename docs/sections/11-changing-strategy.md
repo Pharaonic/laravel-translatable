@@ -5,13 +5,13 @@ Changing a marker or `translatable.strategy` never moves data. To move a model t
 ### 1. Inspect
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:inspect 'App\Post'
+php artisan translatable:inspect 'App\Models\Post'
 ```
 
 ### 2. Create the New Storage
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:make-schema 'App\Post' --to=json
+php artisan translatable:make-schema 'App\Models\Post' --to=json
 php artisan migrate
 ```
 
@@ -20,8 +20,8 @@ php artisan migrate
 `translatable:migrate` is a dry run by default. It reports what it would copy and any conflicts. Add `--apply` to write.
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:migrate 'App\Post' --from=table --to=json
-php artisan translatable:migrate 'App\Post' --from=table --to=json --apply
+php artisan translatable:migrate 'App\Models\Post' --from=table --to=json
+php artisan translatable:migrate 'App\Models\Post' --from=table --to=json --apply
 ```
 
 | Option | Description |
@@ -40,7 +40,7 @@ The source is never changed. Each record whose target differs from the source is
 ### 4. Verify
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:verify 'App\Post' --from=table --to=json
+php artisan translatable:verify 'App\Models\Post' --from=table --to=json
 ```
 
 It compares every record and exits with `1` when any differs.
@@ -52,8 +52,8 @@ Deploy the marker (`implements JsonTranslatable`) or the configuration. The old 
 ### Undo
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:rollback 'App\Post' --migration-id=<id>          # report
-php artisan translatable:rollback 'App\Post' --migration-id=<id> --apply
+php artisan translatable:rollback 'App\Models\Post' --migration-id=<id>          # report
+php artisan translatable:rollback 'App\Models\Post' --migration-id=<id> --apply
 ```
 
 Rollback writes the journaled previous values back to the target.

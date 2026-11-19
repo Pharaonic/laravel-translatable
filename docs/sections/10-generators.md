@@ -34,8 +34,8 @@ Edit the copies in `stubs/translatable`: `model.stub`, `model.translation.stub`,
 Show a model's strategy, where it comes from, its fields, and which layouts have a schema and data.
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:inspect 'App\Post'
-php artisan translatable:inspect 'App\Post' --json
+php artisan translatable:inspect 'App\Models\Post'
+php artisan translatable:inspect 'App\Models\Post' --json
 ```
 
 ### translatable:make-schema
@@ -43,9 +43,9 @@ php artisan translatable:inspect 'App\Post' --json
 Write a migration that adds another strategy's storage to an existing model, for you to review and run.
 
 ```bash title="Terminal" no-line-numbers
-php artisan translatable:make-schema 'App\Post' --to=json
-php artisan translatable:make-schema 'App\Post' --to=columns --locales=en,ar,fr
-php artisan translatable:make-schema 'App\Post' --to=table
+php artisan translatable:make-schema 'App\Models\Post' --to=json
+php artisan translatable:make-schema 'App\Models\Post' --to=columns --locales=en,ar,fr
+php artisan translatable:make-schema 'App\Models\Post' --to=table
 ```
 
 `--to=table` needs the translation model first. Its foreign key column gets the exact type of the model's key (`increments`, `bigIncrements`, UUID, ULID or string), read from the database, so MySQL and PostgreSQL accept the foreign key. When the type can't be read, the command warns you to check the column.

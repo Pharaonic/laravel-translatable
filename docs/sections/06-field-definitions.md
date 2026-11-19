@@ -2,7 +2,7 @@
 
 `$translatables` lists untyped fields. To give fields a type or make them required, return them from a `translatable()` method instead.
 
-```php title="app/Product.php"
+```php title="app/Models/Product.php"
 class Product extends Model implements JsonTranslatable
 {
     use Translatable;
