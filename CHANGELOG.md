@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 11.0.2 - 2026-11-20
+
+### Changed
+
+- The AI Ready badge in the docs and on the pharaonic.dev package page uses the violet of the docs' tip alert.
+
 ## 11.0.1 - 2026-11-19
 
 ### Changed
