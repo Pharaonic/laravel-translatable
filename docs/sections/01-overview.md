@@ -2,7 +2,7 @@
 - Laravel Package {color=blue}
 - {release.label} {color=green}
 - {package.license} License {color=purple}
-- AI Ready {color=purple}
+- AI Ready {color=violet}
 :::
 
 # Laravel Translatable
