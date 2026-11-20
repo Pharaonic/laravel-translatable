@@ -10,7 +10,7 @@ badges:
   - label: "{package.downloadsShort}+ downloads"
     color: blue
   - label: AI Ready · Laravel Boost
-    color: purple
+    color: violet
 eyebrow: "{package.name}"
 title: One API,
 highlight: three ways to store translations
